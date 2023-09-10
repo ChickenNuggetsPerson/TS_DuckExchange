@@ -1,0 +1,108 @@
+extends layout
+
+block layout-content
+
+  html
+    head
+      script(src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js")
+      script(src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.8/beautify.js")
+      script(src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.js" integrity="sha512-uE2UhqPZkcKyOjeXjPCmYsW9Sudy5Vbv0XwAVnKBamQeasAVAmH6HR9j5Qpy6Itk1cxk+ypFRPeAZwNnEwNuzQ==" crossorigin="anonymous" referrerpolicy="no-referrer")
+    body()
+
+      div( class="swipe-container")
+        div( class="container text-center formBackground" style="width:90%;")  
+
+          h2 Admin View
+
+          div(class="btn-group")
+            button(type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false") Pick Challenge
+              span(class="visually-hidden") Toggle Dropdown
+            
+            ul(class="dropdown-menu" id="challengeDropdown")
+              li
+                a(class="dropdown-item" id="newChallengeButton") New Challenge
+              li
+                hr(class="dropdown-divider")
+
+            button(type="button" class="btn btn-success" onclick='save()') Save Changes
+          
+          br
+          br
+
+          button(type="button" class="btn btn-warning" onclick='setCurrent()') Set Current Challenge
+
+          br
+          br
+
+          div(class="input-group")
+            span(class="input-group-text") Challenge Name:
+            input(type="text" class="form-control" aria-label="With textarea" id="challengeTitle" )  
+          
+          br
+          h3 Description: 
+          div(class="input-group")
+            textarea(id="challengeDesc" class="form-control" aria-label="With textarea" style="height:150px;;")
+          br
+          br
+
+          h2 Function Declaration:
+          div(class="input-group mb-3")
+            span(class="input-group-text") public
+            select(class="form-select" id="returnTypeSelect" style="width:10px;")
+              option(value="0") void
+              option(value="1") boolean
+              option(value="2") int
+              option(value="3") double
+
+            input(type="text" class="form-control" value="myFunction" id="functionName")
+
+          br
+          br
+
+          h2 Arguments:
+
+          div(class="container text-center")
+            div(class="row")
+              div(class="col")
+                h4 Available Options
+                ul(id="sideBarArgList" style="list-style: none;list-style-type:none; padding: 0px;")
+              div(class="col")
+                h4 Drag Here
+                ul(id="argList" style="list-style: none;list-style-type:none; padding: 0px;")
+          br
+          br
+
+          //h4 Test the Function:
+
+          //div(class="input-group")
+            textarea(id="code-input" class="form-control" aria-label="With textarea" style="height:150px;;") 
+          
+
+          //br
+          //button(type="button" class="btn btn-success" id="execute-button") Execute Code
+          //br
+          //br
+
+          div(class="container text-center")
+            div(class="row")
+              div(class="col")
+                h2 Tests JSON:
+                h6 Enter Tests as JSON Array
+            div(class="row")
+              div(class="col")
+
+                div(class="input-group")
+                  textarea(id="testsJson" class="form-control" aria-label="With textarea" style="height:300px;;")
+
+          br
+          br
+
+          button(type="button" class="btn btn-danger" onclick='deleteChallenge()') Delete Challenge
+
+
+      script.
+        var challenge = !{challenge};
+        var currentChallengeID = !{currentChallengeID};
+        var otherChallenges = !{allChallenges};
+        var userID = !{userID};
+      script(src="/static/adminView.js")

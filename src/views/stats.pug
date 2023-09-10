@@ -1,0 +1,24 @@
+extends layout
+
+block layout-content
+
+  html
+    head
+           
+    body
+
+      div(class="text-center center" style="background-color: var(--firstColor); width: 70%; border-radius: 60px;")
+        div(class="center" style="background-color: var(--secondColor); width: 100%; border-radius: 45px;")
+          h2(style="font-family: AkayaKanadaka-Regular;") Leader Board
+
+
+          table(id="myTable" class="display")
+              thead
+                  tr(id="colNames")
+                    th User
+
+          tbody(id="mainList" style="color:white" class="table-group-divider")
+
+      script.
+         var colNames = !{colNames};
+      script(src="/static/stats.js")

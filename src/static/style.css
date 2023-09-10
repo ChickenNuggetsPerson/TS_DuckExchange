@@ -1,0 +1,113 @@
+:root {
+  --firstColor: rgb(234, 155, 95);
+  --secondColor: rgb(127, 87, 72);
+}
+.center {
+  padding: 30px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.goodRedult {
+  /*background-color: rgb(var(--bs-success));*/
+  background-color: rgb(62, 90, 62);
+}
+.badResult {
+  /*background-color: rgb(var(--bs-danger));*/
+  background-color: rgb(114, 73, 73);
+}
+
+
+body {
+  background-color: rgb(254, 254, 235);
+}
+.firstColor {
+    color: var(--firstColor);
+}
+.secondColor {
+  background-color: var(--secondColor);
+}
+.thirdColor {
+    color: rgb(83, 87, 138);
+    filter: drop-shadow(10px 5px 4px #101010);
+}
+.altColor {
+    background-color: rgb(var(--bs-tertiary-bg-rgb));
+}
+  
+  
+  
+  
+.formBackground {
+    background-color: rgb(var(--bs-border-color-rgb));
+    padding: 5%;
+    border-radius: 20px;
+  
+    /*filter: drop-shadow(8px 8px 10px #101010);*/
+} 
+.formBackground input {
+    color: black;
+    background-color: white;
+}
+  
+.frosted-glass {
+    background: rgba(255, 255, 255, 0.05); /* Adjust the opacity as needed */
+    backdrop-filter: blur(5px); /* Adjust the blur radius as needed */
+    -webkit-backdrop-filter: blur(5px); /* Support for older Safari versions */
+}
+  
+  
+  
+
+  
+  
+header {
+  align-items: center;
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+input {
+  border-radius: 5px;
+}
+
+
+
+.formBackground input {
+  color: var(--bs-body-color);
+  background-color: var(--bs-body-bg);
+}
+
+
+
+
+
+.dataTables_wrapper .dataTables_filter {
+  float: none;
+  text-align: center;
+  color: black;
+}
+.dataTables_wrapper .dataTables_filter input{
+  color: rgb(255, 255, 255);
+  background-color:rgb(35, 35, 36);
+  margin: 0px;
+}
+.dataTables_wrapper .dataTables_length {
+  float: none;
+  text-align: center;
+  margin-top: 10px;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  color: white !important;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+  background-color: rgb(var(--bs-primary-rgb));
+  border-radius: 5px;
+  color: white !important;
+}
+.paginate_button:hover {
+  background: rgb(var(--bs-body-bg-rgb)) !important;
+  border-radius: 10px !important;
+  border-color: rgb(var(--bs-primary-rgb)) !important;
+}
