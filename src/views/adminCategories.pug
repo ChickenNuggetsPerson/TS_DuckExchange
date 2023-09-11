@@ -1,0 +1,31 @@
+extends layout
+
+block layout-content
+
+  html
+    head
+      script(src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js")
+      script(src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.8/beautify.js")
+      script(src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.js" integrity="sha512-uE2UhqPZkcKyOjeXjPCmYsW9Sudy5Vbv0XwAVnKBamQeasAVAmH6HR9j5Qpy6Itk1cxk+ypFRPeAZwNnEwNuzQ==" crossorigin="anonymous" referrerpolicy="no-referrer")
+    body()
+
+      div( class="swipe-container")
+        div( class="container text-center formBackground" style="width:90%;")  
+
+          h1(style="font-family: Modak; color:var(--firstColor); letter-spacing: 4;") Admin View
+          
+          
+          ul(class="nav nav-pills justify-content-center")
+            li(class="nav-item")
+              a(class="nav-link" aria-current="page" onclick="changePage('/admin/view/users')") Users
+            li(class="nav-item")
+              a(class="nav-link active") Categories
+
+          
+
+      script.
+        var categories = !{categories};
+        var users = !{users};
+
+      script(src="/static/adminLib.js")
+      script(src="/static/adminViewCategories.js")

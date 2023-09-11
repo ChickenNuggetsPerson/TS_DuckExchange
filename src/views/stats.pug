@@ -4,21 +4,27 @@ block layout-content
 
   html
     head
-           
-    body
+      link(href="https://fonts.googleapis.com/css2?family=Akaya+Kanadaka&display=swap" rel="stylesheet")
 
-      div(class="text-center center" style="background-color: var(--firstColor); width: 70%; border-radius: 60px;")
-        div(class="center" style="background-color: var(--secondColor); width: 100%; border-radius: 45px;")
-          h2(style="font-family: AkayaKanadaka-Regular;") Leader Board
+    body(onload="pageLoaded()")
 
+      div(id="duckBackground")
 
-          table(id="myTable" class="display")
+      div(id="outerBorder" class="text-center center" style="background-color: var(--firstColor);")
+        div(id="innerBoarder" class="center" style="background-color: var(--secondColor); width: 100%;")
+          strong
+            h1(id="leaderboardText" style="font-family: Modak; color:var(--thirdColor); letter-spacing: 4;") Leaderboard
+
+          div(style="overflow-x: auto; overflow-y: hidden; white-space: nowrap;")
+            table( id="myTable" class="display")
               thead
                   tr(id="colNames")
-                    th User
+                    th(style="color:white;") User
 
-          tbody(id="mainList" style="color:white" class="table-group-divider")
-
+              tbody(id="list" style="color:white" class="table-group-divider")
+            
+      button(type="button", class="btn btn-warning" style="position:relative; bottom:0;" onclick="changePage('/admin')") Admin
+      
       script.
          var colNames = !{colNames};
       script(src="/static/stats.js")

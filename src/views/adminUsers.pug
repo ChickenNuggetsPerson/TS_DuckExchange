@@ -1,0 +1,59 @@
+extends layout
+
+block layout-content
+
+  html
+    head
+      script(src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js")
+      script(src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.8/beautify.js")
+      script(src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.js" integrity="sha512-uE2UhqPZkcKyOjeXjPCmYsW9Sudy5Vbv0XwAVnKBamQeasAVAmH6HR9j5Qpy6Itk1cxk+ypFRPeAZwNnEwNuzQ==" crossorigin="anonymous" referrerpolicy="no-referrer")
+    body()
+
+      div( class="swipe-container")
+        div( class="container text-center formBackground" style="width:90%;")  
+
+          h1(style="font-family: Modak; color:var(--firstColor); letter-spacing: 4;") Admin View
+        
+          br
+
+          ul(class="nav nav-pills justify-content-center")
+            li(class="nav-item")
+              a(class="nav-link active" aria-current="page") Users
+            li(class="nav-item")
+              a(class="nav-link" onclick="changePage('/admin/view/categories')") Categories
+
+          br
+
+          div(class="container text-center")
+            div(class="row")
+              div(class="col")
+
+                ul(class="list-group" id="sideList")
+
+              div(class="col")
+                div(class="justify-content-center")
+
+                  button(type="button", class="btn btn-success" style="position:relative; bottom:0;" onclick="saveBtnClicked()") Save Changes
+                  button(type="button", class="btn btn-danger" style="position:relative; bottom:0;" onclick="deleteUsr()") Delete User
+
+                  br
+                  br
+
+                  div(class="input-group")
+                    span(class="input-group-text") Name:
+                    input(type="text" class="form-control" aria-label="With textarea" id="personName" )  
+                    
+                  br
+                  
+                  div(id="catContainer")
+          
+
+
+
+
+      script.
+        var categories = !{categories};
+        var users = !{users};
+
+      script(src="/static/adminLib.js")
+      script(src="/static/adminViewUsers.js")

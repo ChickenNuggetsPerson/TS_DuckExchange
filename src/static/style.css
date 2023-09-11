@@ -1,6 +1,7 @@
 :root {
-  --firstColor: rgb(234, 155, 95);
-  --secondColor: rgb(127, 87, 72);
+  --firstColor: rgb(234, 145, 78);
+  --secondColor: rgb(145, 99, 84);
+  --thirdColor: rgb(75, 50, 40);
 }
 .center {
   padding: 30px;
@@ -90,8 +91,9 @@ input {
 }
 .dataTables_wrapper .dataTables_filter input{
   color: rgb(255, 255, 255);
-  background-color:rgb(35, 35, 36);
+  background-color:var(--thirdColor);
   margin: 0px;
+  width: 100%;
 }
 .dataTables_wrapper .dataTables_length {
   float: none;
@@ -111,3 +113,33 @@ input {
   border-radius: 10px !important;
   border-color: rgb(var(--bs-primary-rgb)) !important;
 }
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+  color: rgb(var(--bs-body-bg-rgb)) !important;
+}
+
+
+
+@keyframes rotatingCW {
+  from {
+    transform: rotate(0deg) scaleX(-1);
+  }
+  to {
+    transform: rotate(360deg) scaleX(-1);
+  }
+}
+@keyframes rotatingCCW {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+.rotatingCW {
+  animation: rotatingCW 100s linear infinite;
+}
+.rotatingCCW {
+  animation: rotatingCCW 100s linear infinite;
+}
+

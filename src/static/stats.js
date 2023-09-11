@@ -1,19 +1,116 @@
+window.addEventListener('resize', adjustDivSize);
+let spawnDucks = true
+
+function adjustDivSize() {
+    const outer = document.getElementById('outerBorder');
+    const inner = document.getElementById("innerBoarder")
+    const leaderText = document.getElementById("leaderboardText")
+
+    if (window.innerWidth < 480) {
+        outer.style.width = '100%';
+        outer.style.borderRadius = "0px"
+
+        outer.style.paddingLeft = "0px"
+        outer.style.paddingRight = "0px"
+        outer.style.marginBottom = "100px"
+
+        inner.style.borderRadius = "0px"
+
+        leaderText.style.fontSize = "12vw"
+
+        spawnDucks = false
+    } else {
+        outer.style.width = '75vw';
+        outer.style.borderRadius = "60px"
+
+        outer.style.paddingLeft = "30px"
+        outer.style.paddingRight = "30px"
+        outer.style.marginBottom = ""
+
+        inner.style.borderRadius = "45px"
+
+        leaderText.style.fontSize = "7vw"
+
+        spawnDucks = true
+    }
+}
+
 
 console.log(colNames);
 colNames.forEach(element => {
     let newRow = document.createElement("th")
-    newRow.innerText = element
+    newRow.innerText = element.name
+    newRow.style.color = "white"
     document.getElementById("colNames").appendChild(newRow)
 });
 
 
+
+async function getUserData() {
+    let data;
+    await fetch('/data/users', {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(response => {
+        if (response.error) {
+            throw new Error("Error Getting User Data");
+        } else {
+        data = response
+        }
+    })
+    return data
+}
+
+function getValFromUUID(uuid, entryArray) {
+    let value = 0;
+    entryArray.forEach(entry => {
+        if (entry.uuid == uuid) {
+            value = entry.value
+        }
+    });
+    return value;
+}
+async function contructTable() {
+    let userData = await getUserData()
+    console.log(userData)
+
+    let tbody = document.getElementById("list")
+    userData.forEach(user => {
+        let row = document.createElement("tr")
+
+        let name = document.createElement("th")
+        name.innerText = user.name
+        row.appendChild(name)
+
+        colNames.forEach(col => {
+            let item = document.createElement("th")
+            item.innerText = getValFromUUID(col.uuid, user.entries)
+            row.appendChild(item)
+        });
+
+
+        tbody.appendChild(row)
+    });
+}
+
+
+
 let table;
-function pageLoaded() {
+async function pageLoaded() {
     try { table.destroy() } catch(err) {}
+
+    try {
+        await contructTable()
+    } catch (err) { console.log(err) }
 
     table = new DataTable('#myTable', { 
         destroy: true,
         dom: ' <"search"f><"top"l>rt<"bottom"ip><"clear">',
+        //"scrollX": true,
         language: {
             searchPlaceholder: "Search",
             search: "",
@@ -23,7 +120,7 @@ function pageLoaded() {
             }
         },
         pagingType: "full_numbers",
-        aaSorting: [[1, "asc"]],
+        aaSorting: [[1, "desc"]],
         /*"drawCallback": function( settings ) {
             let api = this.api();
             api.rows( {page:'current'} ).every( function ( rowIdx, tableLoop, rowLoop ) {
@@ -49,7 +146,58 @@ function pageLoaded() {
         }*/
     });
 
+    if (spawnDucks) {
+        startDucks()
+    }
+    
 }
 
 
-pageLoaded()
+function boundsWithin(bound1, bound2) {
+    if (bound1.right > bound2.left || bound1.left < bound2.right) {
+        if (bound1.bottom > bound2.top || bound1.top < bound2.bottom) {
+            return true
+        }
+    }
+    return false;
+}
+async function startDucks() {
+    let ref = document.getElementById("duckBackground")
+    let outerBorder = document.getElementById("outerBorder").getBoundingClientRect()
+
+    for (let i = 0; i < 5; i++) {
+        // object(data="/static/duck.svg" style="width:10%; position:absolute")
+        let duck = document.createElement("object")
+        duck.data = "/static/duck.svg"
+        let width = ((Math.random() * 10) + 5)
+        duck.style.width = width + "%"
+        duck.style.position = "absolute"
+
+        let top = Math.random() * window.innerHeight
+        if (top < 200) {
+            duck.style.bottom = top + 200
+        } else {
+            duck.style.bottom = top
+        }
+
+        if ((Math.floor(Math.random() * 100) % 2) == 0) {
+            duck.style.left = Math.random() * outerBorder.left
+        } else {
+            duck.style.left = (Math.random() * (window.innerWidth - outerBorder.right) ) + outerBorder.width - width
+        }
+
+        
+
+        if (Math.floor(Math.random() * 200) % 2 == 0) {
+            duck.classList.add("rotatingCW")
+        } else {
+            duck.classList.add("rotatingCCW")
+        }
+
+        duck.style.zIndex = -100
+
+        ref.appendChild(duck)
+    }
+}
+
+adjustDivSize();
