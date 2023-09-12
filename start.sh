@@ -1,2 +1,1 @@
-npx tsc
-node dist/main.js
+nodemon -x "npx tsc && node dist/main.js"

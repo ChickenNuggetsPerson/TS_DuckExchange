@@ -12,6 +12,7 @@ let FileStore = require('session-file-store')(session);
 import * as fs from 'fs';
 
 import { Category, CategoryEntry, User } from './lib';
+import { AutoUpdater } from './autoUpdater';
 
 function makeid(length: number) {
   let result = '';
@@ -121,7 +122,15 @@ app.get("/admin/view/categories", (req: Request, res: Response) => {
     users: JSON.stringify(getUsers())
   })
 })
-
+app.get("/admin/forceUpdate", (req: Request, res: Response) => {
+  if (!isAdmin(req)) {
+    res.status(400);
+    res.send("Not Authorized");
+    return
+  }
+  
+  updater.check();
+})
 
 
 
@@ -295,6 +304,9 @@ function createAdmin(username : string, password : string) {
 }
 
 
+
+let updater : AutoUpdater = new AutoUpdater("https://raw.githubusercontent.com/ChickenNuggetsPerson/TS_DuckExchange/main/package.json", "asdf");
+
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);
 
@@ -304,4 +316,5 @@ app.listen(port, () => {
 }
 
   loadEverything();
+
 });

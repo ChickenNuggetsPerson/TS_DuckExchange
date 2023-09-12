@@ -1,0 +1,8 @@
+{
+    "ignore": [
+        "dist/**", 
+        "data/**",
+        "sessions/**"
+    ],
+    "ext": "js,json,html,ts"
+  }
