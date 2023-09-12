@@ -18,6 +18,7 @@ class AutoUpdater {
 
     async check() : Promise<void> {
         let result = this.checkVersions(this.currentVersion, this.parseVersionString(await this.fetchJSON(this.repoUrl)));
+        console.log("Check For Update Result: ", result)
         if (result) { return; }
 
         console.log("Updating Code")
