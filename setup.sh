@@ -7,4 +7,6 @@ mkdir dist
 
 npm install
 
+echo
+echo
 echo Done Installing Files... You can now run start.sh to start the server
