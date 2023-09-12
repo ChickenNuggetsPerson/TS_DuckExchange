@@ -130,6 +130,7 @@ app.get("/admin/forceUpdate", (req: Request, res: Response) => {
   }
   
   updater.check();
+  res.send("No Update Avaliable")
 })
 
 
