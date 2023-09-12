@@ -129,6 +129,8 @@ app.get("/admin/forceUpdate", (req: Request, res: Response) => {
     return
   }
   
+  console.log("Force Update Called")
+  
   updater.check();
   res.send("No Update Avaliable")
 })
