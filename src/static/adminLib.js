@@ -22,6 +22,7 @@ function getUser(uuid) {
 }
 
 
+
 let listLength = 0
 let selected = ""
 function sideListAddItem(name, uuid, clickFunction) {

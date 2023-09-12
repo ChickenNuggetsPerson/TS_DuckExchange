@@ -10,43 +10,44 @@ block layout-content
     body()
 
       div( class="swipe-container")
-        div( class="container text-center formBackground" style="width:90%;")  
+        div(id="outerBorder" class="text-center center" style="background-color: var(--firstColor); width:80%; border-radius:60px;")
+          div(id="innerBoarder" class="center" style="background-color: var(--secondColor); width: 100%; border-radius: 45px;")
 
-          h1(style="font-family: Modak; color:var(--firstColor); letter-spacing: 4;") Admin View
-        
-          br
-
-          ul(class="nav nav-pills justify-content-center")
-            li(class="nav-item")
-              a(class="nav-link active" aria-current="page") Users
-            li(class="nav-item")
-              a(class="nav-link" onclick="changePage('/admin/view/categories')") Categories
-
-          br
-
-          div(class="container text-center")
-            div(class="row")
-              div(class="col")
-
-                ul(class="list-group" id="sideList")
-
-              div(class="col")
-                div(class="justify-content-center")
-
-                  button(type="button", class="btn btn-success" style="position:relative; bottom:0;" onclick="saveBtnClicked()") Save Changes
-                  button(type="button", class="btn btn-danger" style="position:relative; bottom:0;" onclick="deleteUsr()") Delete User
-
-                  br
-                  br
-
-                  div(class="input-group")
-                    span(class="input-group-text") Name:
-                    input(type="text" class="form-control" aria-label="With textarea" id="personName" )  
-                    
-                  br
-                  
-                  div(id="catContainer")
+            h1(style="font-family: Modak; color:var(--firstColor); letter-spacing: 4;") Admin View
           
+            br
+
+            ul(class="nav nav-pills justify-content-center")
+              li(class="nav-item")
+                a(class="nav-link active" aria-current="page") Users
+              li(class="nav-item")
+                a(class="nav-link" onclick="changePage('/admin/view/categories')" style="color:white;") Categories
+
+            br
+
+            div(class="container text-center")
+              div(class="row")
+                div(class="col")
+
+                  ul(class="list-group" id="sideList")
+
+                div(class="col")
+                  div(class="justify-content-center")
+
+                    button(type="button", class="btn btn-success" style="position:relative; bottom:0;" onclick="saveBtnClicked()") Save Changes
+                    button(type="button", class="btn btn-danger" style="position:relative; bottom:0;" onclick="deleteUsr()") Delete User
+
+                    br
+                    br
+
+                    div(class="input-group")
+                      span(class="input-group-text") Name:
+                      input(type="text" class="form-control" aria-label="With textarea" id="personName" )  
+                      
+                    br
+                    
+                    div(id="catContainer")
+            
 
 
 

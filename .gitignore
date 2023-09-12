@@ -2,3 +2,4 @@ node_modules/
 sessions/
 data/
 dist/
+.DS_Store

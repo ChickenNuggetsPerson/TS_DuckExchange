@@ -89,9 +89,11 @@ async function contructTable() {
         colNames.forEach(col => {
             let item = document.createElement("th")
             item.innerText = getValFromUUID(col.uuid, user.entries)
+            item.id = col.uuid + "-" + user.uuid
             row.appendChild(item)
         });
 
+        row.setAttribute("uuid", user.uuid)
 
         tbody.appendChild(row)
     });
@@ -149,7 +151,42 @@ async function pageLoaded() {
     if (spawnDucks) {
         startDucks()
     }
+
+    let refreshTime = 5;
+    setInterval(() => {
+        refreshPageData();
+    }, refreshTime * 1000);
+
+}
+
+
+function getUser(uuid, newData) {
+    for (let i = 0; i < newData.length; i++) {
+        if (newData[i].uuid == uuid) {
+            return newData[i]
+        }
+    }
+    return undefined
+}
+async function refreshPageData() {
+    console.log("Refreshing")
     
+    let newData = await getUserData();
+
+    table.rows().every( function ( rowIdx, tableLoop, rowLoop ) {
+        var data = this.node();
+        let userUUID = data.getAttribute("uuid")
+
+        let userObj = getUser(userUUID, newData)
+        userObj.entries.forEach(entry => {
+            try {
+                document.getElementById(entry.uuid + "-" + userObj.uuid).innerText = entry.value
+            } catch (err) {}
+        })
+    });
+
+    table.draw()
+    table.rows().invalidate().draw();
 }
 
 
@@ -183,15 +220,15 @@ async function startDucks() {
         if ((Math.floor(Math.random() * 100) % 2) == 0) {
             duck.style.left = Math.random() * outerBorder.left
         } else {
-            duck.style.left = (Math.random() * (window.innerWidth - outerBorder.right) ) + outerBorder.width - width
+            duck.style.left = (Math.random() * (window.innerWidth - outerBorder.right)) + outerBorder.width - width
         }
 
         
-
+        let rotationSpeed = Math.floor((Math.random() * 70) + 10)
         if (Math.floor(Math.random() * 200) % 2 == 0) {
-            duck.classList.add("rotatingCW")
+            duck.style.animation = `rotatingCW ${rotationSpeed}s linear infinite`
         } else {
-            duck.classList.add("rotatingCCW")
+            duck.style.animation = `rotatingCCW ${rotationSpeed}s linear infinite`
         }
 
         duck.style.zIndex = -100
