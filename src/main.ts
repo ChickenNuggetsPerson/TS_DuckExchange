@@ -58,7 +58,7 @@ function decrypt(encryptedText : string, password : string) {
 
 
 const app: Application = express();
-const port = 19234;
+const port = 8080;
 
 app.set('view engine', 'pug');
 app.set('views', "./src/views");
@@ -308,7 +308,7 @@ function createAdmin(username : string, password : string) {
 
 
 
-let updater : AutoUpdater = new AutoUpdater("https://raw.githubusercontent.com/ChickenNuggetsPerson/TS_DuckExchange/main/package.json", "asdf");
+let updater : AutoUpdater = new AutoUpdater("https://raw.githubusercontent.com/ChickenNuggetsPerson/TS_DuckExchange/main/package.json", "0 * 0 * * *");
 
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);

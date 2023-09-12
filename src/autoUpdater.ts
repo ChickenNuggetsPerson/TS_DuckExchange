@@ -7,14 +7,18 @@ const { spawn } = require('child_process');
 class AutoUpdater {
     
     repoUrl : string;
-    updateCron : string;
     currentVersion : string;
 
     constructor( repoUrl : string, updateCron : string) {
         this.repoUrl = repoUrl;
-        this.updateCron = updateCron;
         this.currentVersion = JSON.parse(fs.readFileSync("./package.json", "utf-8")).version
+
+        console.log("Started Auto Updater")
+        cron.schedule(updateCron, () => {
+            this.check();
+        });
     };
+    
 
     async check() : Promise<void> {
         //let result = this.checkVersions(this.currentVersion, this.parseVersionString(await this.fetchJSON(this.repoUrl)));
