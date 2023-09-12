@@ -23,9 +23,10 @@ class AutoUpdater {
 
         console.log("Updating Code")
 
-        const command = 'git pull';
+        const command = 'git';
+        const args = ["pull"]
 
-        const child = spawn(command, {
+        const child = spawn(command, args, {
             detached: true,
             stdio: 'ignore'
           });
