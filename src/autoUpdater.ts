@@ -8,16 +8,17 @@ class AutoUpdater {
     
     repoUrl : string;
     updateCron : string;
-    currentVersion : Array<number>;
+    currentVersion : string;
 
     constructor( repoUrl : string, updateCron : string) {
         this.repoUrl = repoUrl;
         this.updateCron = updateCron;
-        this.currentVersion = this.parseVersionString(JSON.parse(fs.readFileSync("./package.json", "utf-8")).version)
+        this.currentVersion = JSON.parse(fs.readFileSync("./package.json", "utf-8")).version
     };
 
     async check() : Promise<void> {
-        let result = this.checkVersions(this.currentVersion, this.parseVersionString(await this.fetchJSON(this.repoUrl)));
+        //let result = this.checkVersions(this.currentVersion, this.parseVersionString(await this.fetchJSON(this.repoUrl)));
+        let result = (this.currentVersion == await this.fetchJSON(this.repoUrl))
         console.log("Check For Update Result: ", result)
         if (result) { return; }
 
