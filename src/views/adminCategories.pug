@@ -31,6 +31,8 @@ block layout-content
 
                   ul(class="list-group" id="sideList")
 
+                  div(style="height:30px")
+
                 div(class="col")
                   div(class="justify-content-center")
 
@@ -40,7 +42,7 @@ block layout-content
                     br
                     br
 
-                    div(class="input-group")
+                    div(class="input-group" style="min-width:190px;")
                       span(class="input-group-text") Name:
                       input(type="text" class="form-control" aria-label="With textarea" id="personName" )  
                       
@@ -63,6 +65,8 @@ block layout-content
       script.
         var categories = !{categories};
         var users = !{users};
+
+        adjustDivSize()
 
       script(src="/static/adminLib.js")
       script(src="/static/adminViewCategories.js")

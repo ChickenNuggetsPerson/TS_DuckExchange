@@ -1,41 +1,3 @@
-window.addEventListener('resize', adjustDivSize);
-let spawnDucks = true
-
-function adjustDivSize() {
-    const outer = document.getElementById('outerBorder');
-    const inner = document.getElementById("innerBoarder")
-    const leaderText = document.getElementById("leaderboardText")
-
-    if (window.innerWidth < 480) {
-        outer.style.width = '100%';
-        outer.style.borderRadius = "0px"
-
-        outer.style.paddingLeft = "0px"
-        outer.style.paddingRight = "0px"
-        outer.style.marginBottom = "100px"
-
-        inner.style.borderRadius = "0px"
-
-        leaderText.style.fontSize = "12vw"
-
-        spawnDucks = false
-    } else {
-        outer.style.width = '75vw';
-        outer.style.borderRadius = "60px"
-
-        outer.style.paddingLeft = "30px"
-        outer.style.paddingRight = "30px"
-        outer.style.marginBottom = ""
-
-        inner.style.borderRadius = "45px"
-
-        leaderText.style.fontSize = "7vw"
-
-        spawnDucks = true
-    }
-}
-
-
 console.log(colNames);
 colNames.forEach(element => {
     let newRow = document.createElement("th")
@@ -148,7 +110,7 @@ async function pageLoaded() {
         }*/
     });
 
-    if (spawnDucks) {
+    if (window.innerWidth > 480) {
         startDucks()
     }
 
@@ -202,25 +164,20 @@ async function startDucks() {
     let ref = document.getElementById("duckBackground")
     let outerBorder = document.getElementById("outerBorder").getBoundingClientRect()
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 7; i++) {
         // object(data="/static/duck.svg" style="width:10%; position:absolute")
         let duck = document.createElement("object")
         duck.data = "/static/duck.svg"
-        let width = ((Math.random() * 10) + 5)
-        duck.style.width = width + "%"
+        let width = ((Math.random() * 100) + 40)
+        duck.style.width = width + "px"
         duck.style.position = "absolute"
 
-        let top = Math.random() * window.innerHeight
-        if (top < 200) {
-            duck.style.bottom = top + 200
-        } else {
-            duck.style.bottom = top
-        }
+        duck.style.top = (Math.random() * (window.innerHeight - width))
 
         if ((Math.floor(Math.random() * 100) % 2) == 0) {
-            duck.style.left = Math.random() * outerBorder.left
+            duck.style.left = Math.random() * (outerBorder.left - width)
         } else {
-            duck.style.left = (Math.random() * (window.innerWidth - outerBorder.right)) + outerBorder.width - width
+            duck.style.left = (Math.random() * ( window.innerWidth - outerBorder.right - width)) + outerBorder.right
         }
 
         
@@ -236,5 +193,3 @@ async function startDucks() {
         ref.appendChild(duck)
     }
 }
-
-adjustDivSize();

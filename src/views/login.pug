@@ -29,6 +29,8 @@ block layout-content
       div(style="height:100px")
   script.
 
+    adjustDivSize()
+
     document.addEventListener("keyup", function(event) {
       if (event.keyCode === 13) {
         if (document.getElementById("username").value == "" || document.getElementById("password").value == "") {

@@ -10,6 +10,7 @@ function buildInputs() {
     categories.forEach(cat => {
         let group = document.createElement("div")
         group.classList.add("input-group")
+        group.style.minWidth = "190px"
 
         let title = document.createElement("span")
         title.classList.add("input-group-text")
