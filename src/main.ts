@@ -122,7 +122,7 @@ app.get("/admin/view/categories", (req: Request, res: Response) => {
     users: JSON.stringify(getUsers())
   })
 })
-app.get("/admin/forceUpdate", (req: Request, res: Response) => {
+app.get("/admin/forceUpdate", async (req: Request, res: Response) => {
   if (!isAdmin(req)) {
     res.status(400);
     res.send("Not Authorized");
@@ -130,8 +130,8 @@ app.get("/admin/forceUpdate", (req: Request, res: Response) => {
   }
   
   console.log("Force Update Called")
-  
-  updater.check();
+
+  await updater.check();
   res.send("No Update Avaliable")
 })
 
