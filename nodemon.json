@@ -2,7 +2,8 @@
     "ignore": [
         "dist/**", 
         "data/**",
-        "sessions/**"
+        "sessions/**",
+        "src/static/**"
     ],
     "ext": "js,json,html,ts"
   }

@@ -110,9 +110,9 @@ async function pageLoaded() {
         }*/
     });
 
-    if (window.innerWidth > 480) {
-        startDucks()
-    }
+
+    startDucks()
+
 
     let refreshTime = 5;
     setInterval(() => {
@@ -160,36 +160,50 @@ function boundsWithin(bound1, bound2) {
     }
     return false;
 }
+
+let duckArray = []
 async function startDucks() {
     let ref = document.getElementById("duckBackground")
-    let outerBorder = document.getElementById("outerBorder").getBoundingClientRect()
+    
 
-    for (let i = 0; i < 7; i++) {
+    let computerDucks = 10;
+    let mobileDucks = 2;
+    for (let i = 0; i < ((window.innerWidth > 480) ? computerDucks : mobileDucks); i++) {
         // object(data="/static/duck.svg" style="width:10%; position:absolute")
-        let duck = document.createElement("object")
-        duck.data = "/static/duck.svg"
-        let width = ((Math.random() * 100) + 40)
-        duck.style.width = width + "px"
-        duck.style.position = "absolute"
 
-        duck.style.top = (Math.random() * (window.innerHeight - width))
+        duckArray.push(new Duck(ref))
+    }
 
-        if ((Math.floor(Math.random() * 100) % 2) == 0) {
-            duck.style.left = Math.random() * (outerBorder.left - width)
-        } else {
-            duck.style.left = (Math.random() * ( window.innerWidth - outerBorder.right - width)) + outerBorder.right
+    setInterval(updateDucks, 20)
+}
+
+function getPositionAtCenter(element) {
+    const {top, left, width, height} = element.getBoundingClientRect();
+    return {
+      x: left + width / 2,
+      y: top + height / 2
+    };
+  }
+ 
+ function getDistanceBetweenElements(a, b) {
+   const aPosition = getPositionAtCenter(a);
+   const bPosition = getPositionAtCenter(b);
+ 
+   return Math.hypot(aPosition.x - bPosition.x, aPosition.y - bPosition.y);  
+ }
+
+function updateDucks() {
+    for (let i = 0; i < duckArray.length; i++) {
+        duckArray[i].update()
+
+        //continue;
+        // Check Bounces off Other Ducks
+        for (let x = 0; x < duckArray.length; x++) {
+            for (let y = 0; y < duckArray.length; y++) {
+                if (x == y) { continue; }
+                //if (getDistanceBetweenElements(duckArray[x].duck, duckArray[y].duck) < 100)
+                    duckArray[x].checkDuckBounce(duckArray[y])
+            }
         }
-
-        
-        let rotationSpeed = Math.floor((Math.random() * 70) + 10)
-        if (Math.floor(Math.random() * 200) % 2 == 0) {
-            duck.style.animation = `rotatingCW ${rotationSpeed}s linear infinite`
-        } else {
-            duck.style.animation = `rotatingCCW ${rotationSpeed}s linear infinite`
-        }
-
-        duck.style.zIndex = -100
-
-        ref.appendChild(duck)
     }
 }

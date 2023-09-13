@@ -310,14 +310,23 @@ function createAdmin(username : string, password : string) {
 
 let updater : AutoUpdater = new AutoUpdater("https://raw.githubusercontent.com/ChickenNuggetsPerson/TS_DuckExchange/main/package.json", "0 * 0 * * *");
 
-app.listen(port, () => {
-  console.log(`Server started on port ${port}`);
+let address = ""
+require('dns').lookup(require('os').hostname(), function (err : any, add : any, fam : any) {
+  address = add;
+  startServer();
+})
 
-  if (process.argv.length == 4) {
-    createAdmin(process.argv[2], process.argv[3])
-    console.log("Created User: " + process.argv[2])
+function startServer() {
+  app.listen(port, () => {
+  
+    console.log(`Server started at locataion ${address}:${port}`);
+  
+    if (process.argv.length == 4) {
+      createAdmin(process.argv[2], process.argv[3])
+      console.log("Created User: " + process.argv[2])
+  }
+  
+    loadEverything();
+  
+  });
 }
-
-  loadEverything();
-
-});

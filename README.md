@@ -2,4 +2,4 @@
 
 ## Todo
 
-- [ ] Add auto updater through github
+- [X] Add auto updater through github

@@ -120,19 +120,25 @@ input {
 
 
 @keyframes rotatingCW {
-  from {
-    transform: rotate(0deg) scaleX(-1);
+  0% {
+    transform: rotate(40deg);
   }
-  to {
-    transform: rotate(360deg) scaleX(-1);
+  50% {
+    transform: rotate(-40deg);
+  }
+  100% {
+    transform: rotate(40deg);
   }
 }
 @keyframes rotatingCCW {
-  from {
-    transform: rotate(360deg);
+  0% {
+    transform: rotate(-40deg) scaleX(-1);
   }
-  to {
-    transform: rotate(0deg);
+  50% {
+    transform: rotate(40deg) scaleX(-1);
+  }
+  100% {
+    transform: rotate(-40deg) scaleX(-1);
   }
 }
 
@@ -143,3 +149,9 @@ input {
   animation: rotatingCCW 100s linear infinite;
 }
 
+.duck {
+  
+}
+.duck:hover {
+  filter: drop-shadow(0px 0px 10px #4040404e);
+}

@@ -67,9 +67,13 @@ function getCatVals() {
 
 async function saveBtnClicked() {
     await save()
+    const parser = new URL(window.location);
+    parser.searchParams.set("uuid", selected);
+    location.href = parser.href;
+    console.log(parser.href)
     setTimeout(() => {
-        location.reload();
-    }, 1000);
+        window.location.replace(parser.href)
+    }, 500);
     
 }
 async function save() {
@@ -157,7 +161,7 @@ async function deleteUsr() {
     
     setTimeout(() => {
         location.reload();
-    }, 1000);
+    }, 500);
 }
 
 
@@ -171,5 +175,10 @@ function buildPage() {
 
     buildInputs();
     buildUserList();
+
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('uuid')) {
+        sidelistSelectUUID(urlParams.get("uuid"))
+    }
 }
 buildPage()

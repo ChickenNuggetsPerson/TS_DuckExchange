@@ -25,6 +25,18 @@ function getUser(uuid) {
 
 let listLength = 0
 let selected = ""
+function sidelistSelectUUID(uuid) {
+    document.getElementById("sideListUUID-" + uuid).click()
+}
+function sideListSelect(numer, uuid, clickFunction) {
+    for (let i = 0; i < document.getElementById("sideList").children.length; i++) {
+        document.getElementById("sideList").children.item(i).classList.remove("active")
+    }
+    document.getElementById("sideList").children.item(numer).classList.add("active")
+    
+    selected = uuid
+    clickFunction()
+}
 function sideListAddItem(name, uuid, clickFunction) {
     
     let li = document.createElement("li")
@@ -34,15 +46,10 @@ function sideListAddItem(name, uuid, clickFunction) {
         li.classList.add("active")
     }
     
-    let numer = listLength
+    let number = listLength
+    li.id = "sideListUUID-" + uuid
     li.onclick = function () {
-        for (let i = 0; i < document.getElementById("sideList").children.length; i++) {
-            document.getElementById("sideList").children.item(i).classList.remove("active")
-        }
-        document.getElementById("sideList").children.item(numer).classList.add("active")
-        
-        selected = uuid
-        clickFunction()
+        sideListSelect(number, uuid, clickFunction)
     }
     listLength ++;
     document.getElementById("sideList").appendChild(li)
