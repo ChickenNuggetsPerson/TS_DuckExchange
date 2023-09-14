@@ -54,3 +54,14 @@ function sideListAddItem(name, uuid, clickFunction) {
     listLength ++;
     document.getElementById("sideList").appendChild(li)
 }
+
+
+
+async function userConfirm(promt) {
+    return new Promise(resolve => {
+        bootbox.confirm(promt,
+        function(result) {
+            resolve(result)
+        });
+    })
+}

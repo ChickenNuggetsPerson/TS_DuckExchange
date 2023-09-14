@@ -118,6 +118,8 @@ async function deleteUsr() {
 
     console.log("Deleting", selected)
 
+    if (!(await userConfirm("Are you sure you want to delete this category?"))) { return; }
+
     const response = await fetch('/data/admin/deleteCategory', {
         method: 'POST',
         headers: {
@@ -141,6 +143,38 @@ async function deleteUsr() {
     setTimeout(() => {
         location.reload();
     }, 500);
+}
+
+
+
+async function newShowVal(newVal) {
+    const response = await fetch('/data/admin/setCategoryVisablity', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            uuid: selected,
+            newShow: newVal
+        })
+    });
+
+    const rewResult = await response.text();
+    console.log(rewResult)
+    if (rewResult == "OK") {
+        console.log("Success");
+        
+        if (newVal) {
+            $.notify("Showing " + document.getElementById("personName").value + " for everyone", "success");
+        } else {
+            $.notify("Hiding " + document.getElementById("personName").value + " for everyone", "success");
+        }
+
+    } else {
+        console.log("Could Not Delete", "error");
+        $.notify("Could Not Update Value", "error");
+
+    }
 }
 
 

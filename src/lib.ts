@@ -8,10 +8,12 @@ interface Category {
 class CategoryEntry {
     uuid: string;
     value: number;
+    show: boolean;
 
-    constructor(uuid: string, value: number) {
+    constructor(uuid: string, value: number, show : boolean ) {
         this.uuid = uuid;
         this.value = value;
+        this.show = show;
     };
 }
 

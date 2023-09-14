@@ -211,7 +211,13 @@ app.post("/data/admin/deleteCategory", (req: Request, res: Response) => {
   res.status(200)
   res.send("OK")
 })
+app.post("/data/admin/setCategoryVisablity", (req: Request, res: Response) => {
+  if (!isAdmin(req)) { res.status(400); res.send("Not authorized"); return; }
 
+  setCategoryVisablity(req.body.uuid, req.body.newShow)
+  res.status(200)
+  res.send("OK")
+})
 
 
 let categoryStorage : Array<Category>;
@@ -251,7 +257,7 @@ function createCategory( cat: Category ) {
   saveCategories(categoryStorage);
 
   for (let i = 0; i < userStorage.length; i++) {
-    userStorage[i].entries.push(new CategoryEntry(cat.uuid, 0));
+    userStorage[i].entries.push(new CategoryEntry(cat.uuid, 0, true));
   }
   saveUsers(userStorage);
 }
@@ -264,6 +270,13 @@ function removeCategory( cat: Category) {
   }
   saveUsers(userStorage);
 }
+function setCategoryVisablity( uuid: string, newShow : boolean) {
+  for (let i = 0; i < userStorage.length; i++) {
+    for (let z = 0; z < userStorage[i].entries.length; z++) 
+      if (userStorage[i].entries[z].uuid == uuid)
+        userStorage[i].entries[z].show = newShow;
+  }
+}
 
 
 
@@ -271,7 +284,7 @@ function removeCategory( cat: Category) {
 function getUsers() : Array<User> { return userStorage; }
 function createUser( usr: User ) {
   categoryStorage.forEach(cat => {
-    //usr.entries.push(new CategoryEntry(cat.uuid, 0))
+    //usr.entries.push(new CategoryEntry(cat.uuid, 0, true))
   })
   userStorage.push(usr);
   saveUsers(userStorage);

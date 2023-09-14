@@ -22,8 +22,43 @@ function buildInputs() {
         storedValue.id = cat.uuid
         storedValue.value = "0"
 
+        
+        let visableBtn = document.createElement("input")
+        visableBtn.type = "radio"
+        visableBtn.classList.add("btn-check")
+        visableBtn.name = cat.uuid + "visableBtn"
+        visableBtn.id = cat.uuid + "-success-outlined"
+        visableBtn.autocomplete = "off"
+        visableBtn.checked = true;
+
+        let visableBtnLabel = document.createElement("label")
+        visableBtnLabel.classList.add("btn"); visableBtnLabel.classList.add("btn-outline-success");
+        visableBtnLabel.htmlFor = cat.uuid + "-success-outlined"
+        visableBtnLabel.innerText = "Visable"
+
+
+
+        let not_visableBtn = document.createElement("input")
+        not_visableBtn.type = "radio"
+        not_visableBtn.classList.add("btn-check")
+        not_visableBtn.name = cat.uuid + "visableBtn"
+        not_visableBtn.id = cat.uuid + "-danger-outlined"
+        not_visableBtn.autocomplete = "off"
+
+        let not_visableBtnLabel = document.createElement("label")
+        not_visableBtnLabel.classList.add("btn"); not_visableBtnLabel.classList.add("btn-outline-danger");
+        not_visableBtnLabel.htmlFor = cat.uuid + "-danger-outlined"
+        not_visableBtnLabel.innerText = "Hidden"
+
         group.appendChild(title)
         group.appendChild(storedValue)
+        
+        group.appendChild(visableBtn)
+        group.appendChild(visableBtnLabel)
+
+        group.appendChild(not_visableBtn)
+        group.appendChild(not_visableBtnLabel)
+
         container.appendChild(group)
     });
 }
@@ -42,6 +77,10 @@ function updateInputs(uuid) {
 
     user.entries.forEach(entry => {
         document.getElementById(entry.uuid).value = entry.value
+        let visableList = document.getElementsByName(entry.uuid + "visableBtn")
+        visableList[0].checked = entry.show;
+        visableList[1].checked = !entry.show;
+        //console.log(entry.show)
     })
 }
 function buildUserList() {
@@ -58,7 +97,8 @@ function getCatVals() {
     categories.forEach(cat => {
         arr.push({
             uuid: cat.uuid,
-            value: document.getElementById(cat.uuid).value
+            value: document.getElementById(cat.uuid).value,
+            show: document.getElementsByName(cat.uuid + "visableBtn")[0].checked
         })
     })
     return arr
@@ -138,6 +178,8 @@ async function save() {
 async function deleteUsr() {
 
     console.log("Deleting", selected)
+
+    if (!(await userConfirm("Are you sure you want to delete this user?"))) { return; }
 
     const response = await fetch('/data/admin/deleteUser', {
         method: 'POST',
