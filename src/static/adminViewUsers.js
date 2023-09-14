@@ -23,6 +23,14 @@ function buildInputs() {
         storedValue.value = "0"
 
         
+        //div(class="container" style="background-color: rgba(41, 25, 25, 0.27); width: fit-content; padding: 0px; border-radius:10px;")
+        let btnDiv = document.createElement('div')
+        btnDiv.classList.add("container")
+        btnDiv.style.backgroundColor = "rgba(41, 25, 25, 0.27)"
+        btnDiv.style.width = "fit-content"
+        btnDiv.style.padding = "0px"
+        btnDiv.style.borderRadius = "10px"
+
         let visableBtn = document.createElement("input")
         visableBtn.type = "radio"
         visableBtn.classList.add("btn-check")
@@ -37,7 +45,6 @@ function buildInputs() {
         visableBtnLabel.innerText = "Visable"
 
 
-
         let not_visableBtn = document.createElement("input")
         not_visableBtn.type = "radio"
         not_visableBtn.classList.add("btn-check")
@@ -50,14 +57,17 @@ function buildInputs() {
         not_visableBtnLabel.htmlFor = cat.uuid + "-danger-outlined"
         not_visableBtnLabel.innerText = "Hidden"
 
+        btnDiv.appendChild(visableBtn)
+        btnDiv.appendChild(visableBtnLabel)
+        btnDiv.appendChild(not_visableBtn)
+        btnDiv.appendChild(not_visableBtnLabel)
+
+
+
         group.appendChild(title)
         group.appendChild(storedValue)
         
-        group.appendChild(visableBtn)
-        group.appendChild(visableBtnLabel)
-
-        group.appendChild(not_visableBtn)
-        group.appendChild(not_visableBtnLabel)
+        group.appendChild(btnDiv)
 
         container.appendChild(group)
     });
