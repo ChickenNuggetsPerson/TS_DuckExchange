@@ -1,5 +1,5 @@
 mkdir data
-cp ./setupFiles/empty.json ./data/admins.json
+cp ./setupFiles/admins.json ./data/admins.json
 cp ./setupFiles/empty.json ./data/categories.json
 cp ./setupFiles/empty.json ./data/users.json
 
