@@ -167,6 +167,8 @@ function boundsWithin(bound1, bound2) {
 }
 
 let duckArray = []
+let ripple;
+
 async function startDucks() {
     let ref = document.getElementById("duckBackground")
     
@@ -180,7 +182,11 @@ async function startDucks() {
     }
 
     setInterval(updateDucks, 20)
+    setInterval(updateRipple, 10)
 }
+
+
+
 
 function getPositionAtCenter(element) {
     const {top, left, width, height} = element.getBoundingClientRect();
@@ -188,18 +194,45 @@ function getPositionAtCenter(element) {
       x: left + width / 2,
       y: top + height / 2
     };
-  }
+}
  
 function getDistanceBetweenElements(a, b) {
    const aPosition = getPositionAtCenter(a);
    const bPosition = getPositionAtCenter(b);
  
    return Math.hypot(aPosition.x - bPosition.x, aPosition.y - bPosition.y);  
- }
+}
+
+
+
+// Ripple System
+let mouseOver = false;
+document.getElementById("outerBorder").onmouseover = function(event) {
+    mouseOver = true;
+};
+document.getElementById("outerBorder").onmouseout = function(event) {
+    mouseOver = false;
+}
+// Create Ripple
+document.body.addEventListener('click', event => {
+    //console.log(event.clientX,  event.clientY)
+    if (mouseOver) { return; }
+    try {
+        ripple.delete()
+    } catch(err) {}
+    
+    ripple = new DuckRipple(event.clientX,  event.clientY)
+}, true);
+function updateRipple() {
+    try {
+        ripple.iterate();
+    } catch(err) {}
+}
 
 function updateDucks() {
     for (let i = 0; i < duckArray.length; i++) {
         duckArray[i].update()
+        duckArray[i].checkRippple()
 
         //continue;
         // Check Bounces off Other Ducks

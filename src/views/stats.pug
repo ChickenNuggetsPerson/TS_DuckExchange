@@ -8,6 +8,7 @@ block layout-content
 
     body(onload="pageLoaded()")
 
+      div(id="rippleBackground")
       div(id="duckBackground")
 
       div(id="outerBorder" class="text-center center" style="background-color: var(--firstColor);")
@@ -31,4 +32,5 @@ block layout-content
          adjustDivSize()
          
       script(src="/static/duck.js")
+      script(src="/static/ripple.js")
       script(src="/static/stats.js")

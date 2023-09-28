@@ -97,6 +97,23 @@ class Duck {
         }
     }
 
+    checkRippple() {
+        try {
+            if (ripple.alive) {
+                let offset = this.getPosOffset( {x: ripple.xPos, y: ripple.yPos}, this.getCenterPos())
+                let dist = Math.sqrt(Math.pow(offset.xOff, 2) + Math.pow(offset.yOff, 2))
+                let radius = ripple.width / 2
+
+                if (dist <= radius) {
+                    let power = 1500;
+                    offset.xOff = (radius - Math.abs(offset.xOff)) * this.getDirection(offset.xOff)
+                    offset.yOff = (radius - Math.abs(offset.yOff)) * this.getDirection(offset.yOff)
+                    this.applyForce(offset.xOff / power, offset.yOff / power)
+                }
+            }
+        } catch(err) {}
+    }
+
     checkInnerBounce() {
 
         if (this.elementsOverlap(this.duck, innerBounds)) {
@@ -209,8 +226,9 @@ class Duck {
             if (this.duck.mouseOver) {
             
                 let force = this.getPosOffset(this.getCenterPos(), mousePos)
-                this.xAcc = ((force.xOff % 500) * (this.getDirection(this.xAcc))) / 50;
-                this.yAcc = ((force.yOff % 500) * (this.getDirection(this.yAcc))) / 50;
+                let mouseAcc = 200;
+                this.xAcc = ((force.xOff % 500) * (this.getDirection(this.xAcc))) / mouseAcc;
+                this.yAcc = ((force.yOff % 500) * (this.getDirection(this.yAcc))) / mouseAcc;
     
             } else {
                 this.xVel = this.xVel * 0.99
