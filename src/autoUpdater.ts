@@ -13,7 +13,9 @@ class AutoUpdater {
         this.repoUrl = repoUrl;
         this.currentVersion = JSON.parse(fs.readFileSync("./package.json", "utf-8")).version
 
+        console.log("Running Version: ", this.currentVersion)
         console.log("Started Auto Updater")
+        console.log("")
         cron.schedule(updateCron, () => {
             this.check();
         });

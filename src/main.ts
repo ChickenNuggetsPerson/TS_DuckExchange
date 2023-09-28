@@ -14,6 +14,7 @@ import * as fs from 'fs';
 import { Category, CategoryEntry, User } from './lib';
 import { AutoUpdater } from './autoUpdater';
 
+
 function makeid(length: number) {
   let result = '';
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
@@ -320,8 +321,7 @@ function createAdmin(username : string, password : string) {
 }
 
 
-
-let updater : AutoUpdater = new AutoUpdater("https://raw.githubusercontent.com/ChickenNuggetsPerson/TS_DuckExchange/main/package.json", "0 * 0 * * *");
+let updater : AutoUpdater;
 
 let address = ""
 require('dns').lookup(require('os').hostname(), function (err : any, add : any, fam : any) {
@@ -329,7 +329,28 @@ require('dns').lookup(require('os').hostname(), function (err : any, add : any, 
   startServer();
 })
 
-function startServer() {
+
+async function printAnimation() {
+  return new Promise(resolve => {
+    let text = fs.readFileSync("./src/assets/logo.txt", 'utf-8')
+    let split = text.split("\n")
+    for (let i = 0; i < split.length; i++) {
+      setTimeout(() => {
+        console.log(split[i])
+        if (i == split.length - 1) {
+          resolve(true)
+        }
+      }, 100 * i);
+    }
+  })
+}
+
+async function startServer() {
+
+  await printAnimation();
+
+  updater = new AutoUpdater("https://raw.githubusercontent.com/ChickenNuggetsPerson/TS_DuckExchange/main/package.json", "0 * 0 * * *");
+
   app.listen(port, () => {
   
     console.log(`Server started at locataion ${address}:${port}`);
