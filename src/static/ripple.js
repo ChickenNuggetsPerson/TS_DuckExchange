@@ -54,9 +54,6 @@ class DuckRipple {
 
         let transparency = 1 - (this.width / this.maxWidth)
         this.ripple.style.borderColor = `rgba(${this.color}, ${transparency})`
-        let maxborderSize = 1000;
-        let amount = (maxborderSize / 2) - ((this.width / this.maxWidth) * maxborderSize)
-
         this.ripple.style.boxShadow = `0px 0px 10px rgba(${this.color}, ${transparency / 4})`
 
         if (this.width > this.maxWidth) {
