@@ -37,7 +37,9 @@ body {
     background-color: rgb(var(--bs-tertiary-bg-rgb));
 }
   
-  
+h3 {
+  color: white;
+}
   
   
 .formBackground {

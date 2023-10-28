@@ -205,11 +205,8 @@ class Duck {
     }
 
     update() {
-
-        //if (!this.duck.mouseOver && this.xVel == 0 && this.yVel && this.xAcc == 0 && this.yAcc == 0)
-            //return;
-
         
+        //if (this.xVel == 0 && this.yVel == 0 && this.xAcc == 0 && this.yAcc == 0 && !this.forceWasApplied && !this.duck.mouseOver) return
 
         this.xPos = JSON.parse(this.duck.style.left.split("px")[0])
         this.yPos = JSON.parse(this.duck.style.top.split("px")[0])

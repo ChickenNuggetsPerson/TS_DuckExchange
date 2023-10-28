@@ -59,7 +59,7 @@ function decrypt(encryptedText : string, password : string) {
 
 
 const app: Application = express();
-const port = 8080;
+const port = 19134;
 
 app.set('view engine', 'pug');
 app.set('views', "./src/views");
