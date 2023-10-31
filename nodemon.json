@@ -2,8 +2,10 @@
     "ignore": [
         "dist/**", 
         "data/**",
+        "node_modules/**",
         "sessions/**",
-        "src/static/**"
+        "src/static/**",
+        "src/views/**"
     ],
-    "ext": "js,json,html,ts"
-  }
+    "ext": "js,ts"
+}

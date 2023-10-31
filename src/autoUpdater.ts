@@ -41,7 +41,7 @@ class AutoUpdater {
           child.unref();
 
     }
-   private parseVersionString( versionString : string ) : Array<number> {
+    private parseVersionString( versionString : string ) : Array<number> {
         let strArray = versionString.split(".");
         let parsedArray : Array<number> = [];
         strArray.forEach(str => {

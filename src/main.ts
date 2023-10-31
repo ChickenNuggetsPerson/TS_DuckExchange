@@ -137,6 +137,26 @@ app.get("/admin/forceUpdate", async (req: Request, res: Response) => {
 })
 
 
+app.get("/admin/view/genHash", (req: Request, res: Response) => {
+
+  if (!isAdmin(req)) {
+    res.status(400);
+    res.send("Not Authorized");
+    return
+  }
+
+  res.render("adminGenHash", {})
+})
+app.post('/admin/genHash', (req, res) => {
+  if (!isAdmin(req)) { res.status(400); res.send("Not authorized"); return; }
+
+  createAdmin(req.body.username, req.body.password)
+
+  res.json({
+    result: encrypt(req.body.username, req.body.password)
+  })
+});
+
 
 
 // Api Requests

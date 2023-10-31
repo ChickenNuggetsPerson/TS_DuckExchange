@@ -1,0 +1,55 @@
+
+//extends layout
+
+block layout-content
+    head
+        title Generate Hash
+    div( class="swipe-container")
+        div( class="container text-center formBackground")  
+        div(id="outerBorder" class="text-center center" style="background-color: var(--firstColor); width:80%; border-radius:60px;")
+            div(id="innerBoarder" class="center" style="background-color: var(--secondColor); width: 100%; border-radius: 45px;")
+                div()
+                h1(style="font-family: Modak; color:var(--firstColor); letter-spacing: 4;") Generate Hash
+                h2(id="message", class="firstColor")= message 
+                form(action='/admin/genHash' method='post' id='loginForm')
+                    h3(style="color:white;") Username:
+                    input(type='text' name='username' placeholder='Username' required='' id="username")
+                    br
+                    br
+                    h3(style="color:white;") Password:
+                    input(type='password' name='password' placeholder='Password' required='' id="password")
+                    br
+                    br
+                    div( class="container text-center") 
+                    div(class="row")
+                        div(class="col")
+                        div(class="btn-group" role="group" aria-label="Basic example" style="margin:20px")
+                            button(type="button" class="btn btn-success" onclick="btnClicked()") Generate
+
+        div(style="height:100px")
+script.
+    async function btnClicked() {
+        var form = document.getElementById('loginForm');
+        const url = form.action;
+        try {
+            const formData = new FormData(form);
+            const response = await fetch(url, {
+                method: 'POST',
+                body: JSON.stringify({"username": document.getElementById("username").value, "password": document.getElementById("password").value}),
+                headers: {
+                    "Content-Type": "application/json",
+                    //- 'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                
+            });
+
+            if (response.status == 401) {
+                document.getElementById('message').innerText = "Error"
+            } else {
+                document.getElementById('message').innerText = "Success"
+            }
+
+        } catch (error) {
+            console.error(error);
+        }      
+    }
