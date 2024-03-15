@@ -25,13 +25,13 @@ class DuckRipple {
         this.xPos = xPos;
         this.yPos = yPos;
 
-        this.ripple = this.createRippleObj(200);
+        this.ripple = this.createRippleObj(-200);
         this.ripple.id = "ripple"
         document.getElementById("rippleBackground").appendChild(this.ripple)
         this.alive = true;
 
         for (let i = 0; i < this.amtOfBabyRipples; i++) {
-            this.babyRipples.push(this.createRippleObj(201));
+            this.babyRipples.push(this.createRippleObj(-201));
             document.getElementById("rippleBackground").appendChild(this.babyRipples[i])
         }
 
@@ -40,7 +40,7 @@ class DuckRipple {
     }
     createRippleObj(zIndex) {
         let d = document.createElement("div");
-        d.style.position = "absolute"
+        d.style.position = "fixed"
         d.style.borderRadius = "50%"
 
         d.style.borderWidth = "2px"

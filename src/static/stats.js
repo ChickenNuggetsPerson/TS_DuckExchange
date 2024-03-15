@@ -175,10 +175,17 @@ async function startDucks() {
 
     let computerDucks = 10;
     let mobileDucks = 2;
-    for (let i = 0; i < ((window.innerWidth > 480) ? computerDucks : mobileDucks); i++) {
+    for (let i = 0; i < ((window.innerWidth > 500) ? computerDucks : mobileDucks); i++) {
         // object(data="/static/duck.svg" style="width:10%; position:absolute")
 
         duckArray.push(new Duck(ref))
+    }
+
+    if (localStorage.getItem("physicsEnabled")) {
+        physicsEnabled = JSON.parse(localStorage.getItem("physicsEnabled"))
+        physicsSwitch.checked = physicsEnabled;
+    } else {
+        physicsEnabled = true;
     }
 
     setInterval(updateDucks, 20)
@@ -195,7 +202,7 @@ function getPositionAtCenter(element) {
       y: top + height / 2
     };
 }
- 
+
 function getDistanceBetweenElements(a, b) {
    const aPosition = getPositionAtCenter(a);
    const bPosition = getPositionAtCenter(b);
@@ -205,6 +212,9 @@ function getDistanceBetweenElements(a, b) {
 
 
 
+let physicsEnabled = true;
+let physicsSwitch = document.getElementById("physicsSwitch")
+
 // Ripple System
 let mouseOver = false;
 document.getElementById("outerBorder").onmouseover = function(event) {
@@ -213,10 +223,18 @@ document.getElementById("outerBorder").onmouseover = function(event) {
 document.getElementById("outerBorder").onmouseout = function(event) {
     mouseOver = false;
 }
+document.getElementById("duckPhysicsSwitchDiv").onmouseover = function(event) {
+    mouseOver = true;
+};
+document.getElementById("duckPhysicsSwitchDiv").onmouseout = function(event) {
+    mouseOver = false;
+}
+
 // Create Ripple
 document.body.addEventListener('click', event => {
     //console.log(event.clientX,  event.clientY)
     if (mouseOver) { return; }
+    if (!physicsEnabled) { return; }
     try {
         ripple.delete()
     } catch(err) {}
@@ -230,6 +248,13 @@ function updateRipple() {
 }
 
 function updateDucks() {
+    if (physicsSwitch.checked != physicsEnabled) {
+        physicsEnabled = physicsSwitch.checked
+        localStorage.setItem("physicsEnabled", JSON.stringify(physicsEnabled))
+    } 
+
+    if (!physicsEnabled) { return; }
+
     for (let i = 0; i < duckArray.length; i++) {
         duckArray[i].update()
         duckArray[i].checkRippple()
@@ -244,4 +269,121 @@ function updateDucks() {
             }
         }
     }
+}
+
+
+
+let ctfToSend = ""
+let userToSend = ""
+let userNameToSend = ""
+function highlightUser(username) {
+
+}
+
+async function submitCTF() {
+
+    let names = []
+    userData.forEach(user => {
+        names.push(user.name)
+    })
+
+    let form = $(`
+        
+        <div class="btn-group">
+            <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"> Choose Your name </button>
+
+            <ul class="dropdown-menu" id="userDropdown">
+                <li>
+                    <a class="dropdown-item"> Current Challenge </a>
+                </li>
+
+            </ul>
+        </div>
+
+        <br>
+        <br>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon3"> CTF </span>
+            </div>
+            <input class="form-control" name="ctf" aria-describedby="basic-addon3">
+        </div>`);
+
+        let dropdown = form.find("ul[id=userDropdown]")
+        names.forEach(name => {
+            let li = document.createElement("li")
+            let a = document.createElement("a")
+            a.classList.add("dropdown-item")
+            a.innerText = name
+
+            li.appendChild(a)
+            dropdown.appendChild(li)
+        })
+
+        bootbox.alert(form, function(){
+            let newPos = {
+                x: JSON.parse(form.find('input[name=xPos]').val()),
+                y: JSON.parse(form.find('input[name=yPos]').val()),
+                rot: JSON.parse(form.find('input[name=rot]').val())
+            }
+
+        });
+
+
+
+
+
+    
+    // bootbox.prompt({
+    //     title: 'Enter CTF',
+    //     centerVertical: true,
+    //     callback: async function(result) {
+
+    //         let dialog = bootbox.dialog({
+    //             title: 'Submiting',
+    //             centerVertical: true,
+    //             message: '<p><i class="fas fa-spin fa-spinner"></i>Loading...</p>'
+    //         });
+
+
+    //         let sendResult = await sendCTF(result, "adsf")
+    //         if (sendResult) {
+    //             dialog.find('.bootbox-body').html('Correct!');
+    //         } else {
+    //             dialog.find('.bootbox-body').html('Invalid CTF');
+    //         }
+
+    //         setTimeout(() => {
+    //             dialog.modal('hide');
+    //         }, 2500);
+
+
+
+    //     }
+    // });
+}
+async function sendCTF(ctf, user) {
+    return new Promise(async (resolve) => {
+        console.log("Saving")
+
+        const response = await fetch('/data/users/submitCTF', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userUUID: user,
+                ctf: ctf
+            })
+        });
+
+        const rewResult = await response.text();
+        console.log(rewResult)
+        if (rewResult == "OK") {
+            resolve(true)
+        } else {
+            resolve(false)
+        }
+    })
 }

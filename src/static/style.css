@@ -1,6 +1,7 @@
 :root {
-  --firstColor: rgb(234, 145, 78);
-  --secondColor: rgb(145, 99, 84);
+  /* --firstColor: rgb(234, 145, 78); */
+  --firstColor: rgb(41, 51, 53);
+  --secondColor: rgb(100, 112, 133);
   --thirdColor: rgb(75, 50, 40);
 }
 .center {
@@ -21,20 +22,21 @@
 
 
 body {
-  background-color: rgb(254, 254, 235);
+  /* background-color: rgb(254, 254, 235); */
+  background-color: rgb(58, 72, 76);
 }
 .firstColor {
-    color: var(--firstColor);
+  color: var(--firstColor);
 }
 .secondColor {
   background-color: var(--secondColor);
 }
 .thirdColor {
-    color: rgb(83, 87, 138);
-    filter: drop-shadow(10px 5px 4px #101010);
+  color: rgb(83, 87, 138);
+  filter: drop-shadow(10px 5px 4px #101010);
 }
 .altColor {
-    background-color: rgb(var(--bs-tertiary-bg-rgb));
+  background-color: rgb(var(--bs-tertiary-bg-rgb));
 }
   
 h3 {
@@ -43,21 +45,24 @@ h3 {
   
   
 .formBackground {
-    background-color: rgb(var(--bs-border-color-rgb));
-    padding: 5%;
-    border-radius: 20px;
-  
-    /*filter: drop-shadow(8px 8px 10px #101010);*/
+  background-color: rgb(var(--bs-border-color-rgb));
+  padding: 5%;
+  border-radius: 20px;
+
+
+  filter: drop-shadow(8px 8px 10px #101010);
 } 
 .formBackground input {
-    color: black;
-    background-color: white;
+  color: black;
+  background-color: white;
 }
   
 .frosted-glass {
-    background: rgba(255, 255, 255, 0.05); /* Adjust the opacity as needed */
-    backdrop-filter: blur(5px); /* Adjust the blur radius as needed */
-    -webkit-backdrop-filter: blur(5px); /* Support for older Safari versions */
+  background: rgba(181, 212, 214, 0.357); /* Adjust the opacity as needed */
+  backdrop-filter: blur(20px); /* Adjust the blur radius as needed */
+  /* filter: blur(2px); */
+  -webkit-backdrop-filter: blur(5px); /* Support for older Safari versions */
+  box-shadow: 10px 10px rgba(181, 212, 214, 0.066);
 }
   
   
@@ -89,11 +94,11 @@ input {
 .dataTables_wrapper .dataTables_filter {
   float: none;
   text-align: center;
-  color: black;
+  color: rgb(255, 255, 255);
 }
 .dataTables_wrapper .dataTables_filter input{
   color: rgb(255, 255, 255);
-  background-color:var(--thirdColor);
+  background-color: rgb(58, 72, 76);
   margin: 0px;
   width: 100%;
 }
@@ -156,4 +161,18 @@ input {
 }
 .duck:hover {
   filter: drop-shadow(0px 0px 10px #4040404e);
+}
+
+#duckPhysicsSwitchDiv {
+  position: fixed; 
+  bottom:0px; 
+  right:0px; 
+  padding:10px; 
+  zIndex:1000;
+}
+#bottomLeftBtns {
+  position: fixed; 
+  bottom:0px; 
+  padding:10px; 
+  zIndex:1000;
 }

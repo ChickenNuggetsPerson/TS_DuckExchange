@@ -23,8 +23,8 @@ class Duck {
     xPos = 0;
     yPos = 0;
 
-    xVel = 0;
-    yVel = 0;
+    xVel = Math.random() - 0.5;
+    yVel = Math.random() - 0.5;
 
     xAcc = 0;
     yAcc = 0;
@@ -70,7 +70,7 @@ class Duck {
             this.mouseOver = false;
         }
 
-        this.duck.style.zIndex = 100
+        this.duck.style.zIndex = -1
 
         simLayer.appendChild(this.duck)
     }

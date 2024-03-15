@@ -8,7 +8,7 @@ function adjustDivSize() {
     const inner = document.getElementById("innerBoarder")
     const leaderText = document.getElementById("leaderboardText")
 
-    if (window.innerWidth < 480) {
+    if (window.innerWidth < 650) {
         outer.style.width = '100%';
         outer.style.borderRadius = "0px"
 

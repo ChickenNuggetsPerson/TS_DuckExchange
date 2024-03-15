@@ -4,6 +4,7 @@ interface Category {
     name: string;
     uuid: string;
     isVisable: boolean;
+    canRemove: boolean;
 }
 class CategoryEntry {
     uuid: string;
@@ -21,6 +22,7 @@ interface User {
     name: string;
     uuid: string;
     entries: Array<CategoryEntry>;
+    hidden: boolean;
 }
 
 

@@ -59,7 +59,7 @@ function decrypt(encryptedText : string, password : string) {
 
 
 const app: Application = express();
-const port = 19134;
+const port = 8080;
 
 app.set('view engine', 'pug');
 app.set('views', "./src/views");
@@ -163,6 +163,22 @@ app.post('/admin/genHash', (req, res) => {
 app.get("/data/users", (req: Request, res: Response) => {
   res.json(getUsers());
 })
+app.post("/data/users/submitCTF", (req: Request, res: Response) => {
+  // if (!isAdmin(req)) { res.status(400); res.send("Not authorized"); return; }
+
+  console.log(req.body)
+
+  let result = addCTFValue(req.body.userUUID, req.body.ctf)
+
+  if (result) {
+    res.status(200)
+    res.send("OK")
+  } else {
+    res.status(200)
+    res.send("Bad CTF")
+  }
+})
+
 
 // Admin Api
 
@@ -221,6 +237,7 @@ app.post("/data/admin/createCategory", (req: Request, res: Response) => {
   if (!isAdmin(req)) { res.status(400); res.send("Not authorized"); return; }
 
   req.body.uuid = makeid(30)
+  req.body.canRemove = true;
   createCategory(req.body)
   res.status(200)
   res.send("OK")
@@ -283,6 +300,9 @@ function createCategory( cat: Category ) {
   saveUsers(userStorage);
 }
 function removeCategory( cat: Category) {
+
+  if (!cat.canRemove) { return; }
+
   categoryStorage.splice(categoryStorage.findIndex(item => item.uuid === cat.uuid), 1)
   saveCategories(categoryStorage);
 
@@ -322,6 +342,30 @@ function editUser( usr: User ) {
     }
   }
   saveUsers(userStorage)
+}
+function getUserFromUUID( uuid: string ) : User | undefined {
+  return userStorage.find(usr => usr.uuid === uuid)
+}
+
+
+import { getCTFValue } from './ctfLib';
+function addCTFValue( userUUID: string, ctf: string ) : boolean {
+  
+  // Get the CTF value
+  let value = getCTFValue(ctf)
+  if (value == 0) { return false; }
+
+  // Get the user object
+  let user = getUserFromUUID(userUUID)
+  
+  if (user === undefined) { return false; } // Check if user exists
+
+  // Find category index and incremend the value
+  let index = user.entries.findIndex(entry => entry.uuid === "ctfPoints")
+  user.entries[index].value += value
+
+  editUser(user)
+  return true;
 }
 
 

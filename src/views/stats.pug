@@ -8,13 +8,10 @@ block layout-content
 
     body(onload="pageLoaded()")
 
-      div(id="rippleBackground")
-      div(id="duckBackground")
-
-      div(id="outerBorder" class="text-center center" style="background-color: var(--firstColor);")
-        div(id="innerBoarder" class="center" style="background-color: var(--secondColor); width: 100%;")
+      div(id="outerBorder" class="text-center center frosted-glass")
+        div(id="innerBoarder" class="center")
           strong
-            h1(id="leaderboardText" style="font-family: Modak; color:var(--thirdColor); letter-spacing: 4;") Leaderboard
+            h1(id="leaderboardText" style="font-family: Modak; color: rgb(58, 72, 76); letter-spacing: 4;") Leaderboard
 
           div(style="overflow-x: auto; overflow-y: hidden; white-space: nowrap;")
             table( id="myTable" class="display")
@@ -23,14 +20,25 @@ block layout-content
                     th(style="color:white;") User
 
               tbody(id="list" style="color:white" class="table-group-divider")
-            
-      button(type="button", class="btn btn-warning" style="position:relative; bottom:0;" onclick="changePage('/admin')") Admin
-      
-      script.
-         var colNames = !{colNames};
 
-         adjustDivSize()
-         
+      div(style="height:100px")
+            
+      div(id="bottomLeftBtns" class="form-check form-switch")
+        button(type="button", class="btn btn-warning" style="position:relative; bottom:0; display: block; margin-bottom: 10px;" onclick="changePage('/admin')") Admin
+        button(type="button", class="btn btn-success" style="position:relative; bottom:0; display: block;" onclick="submitCTF()") Submit CTF
+      
+      div(id="duckPhysicsSwitchDiv" class="form-check form-switch")
+        input(class="form-check-input" type="checkbox" id="physicsSwitch" name="darkmode" value="yes" checked)
+        label(class="form-check-label" for="physicsSwitch" style="font-family: 'Madimi One', sans-serif; color: rgb(255, 255, 255); letter-spacing: 4;") Duck Physics
+
+      div(id="duckBackground")
+      div(id="rippleBackground")
+    
+      script.
+        var colNames = !{colNames};
+
+        adjustDivSize()
+
       script(src="/static/duck.js")
       script(src="/static/ripple.js")
       script(src="/static/stats.js")
