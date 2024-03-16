@@ -166,7 +166,7 @@ app.get("/data/users", (req: Request, res: Response) => {
 app.post("/data/users/submitCTF", (req: Request, res: Response) => {
   // if (!isAdmin(req)) { res.status(400); res.send("Not authorized"); return; }
 
-  console.log(req.body)
+  // console.log(req.body)
 
   let result = addCTFValue(req.body.userUUID, req.body.ctf)
 
@@ -335,12 +335,10 @@ function removeUser( usr: User ) {
   saveUsers(userStorage);
 }
 function editUser( usr: User ) {
-  for (let i = 0; i < userStorage.length; i++) {
-    if (userStorage[i].uuid == usr.uuid) {
-      userStorage[i] = usr
-      break
-    }
-  }
+  
+  let index = userStorage.findIndex(user => user.uuid === usr.uuid)
+  userStorage[index] = usr
+
   saveUsers(userStorage)
 }
 function getUserFromUUID( uuid: string ) : User | undefined {
@@ -348,7 +346,7 @@ function getUserFromUUID( uuid: string ) : User | undefined {
 }
 
 
-import { getCTFValue } from './ctfLib';
+import { getCTFValue, genCTF } from './ctfLib';
 function addCTFValue( userUUID: string, ctf: string ) : boolean {
   
   // Get the CTF value
@@ -357,12 +355,12 @@ function addCTFValue( userUUID: string, ctf: string ) : boolean {
 
   // Get the user object
   let user = getUserFromUUID(userUUID)
-  
   if (user === undefined) { return false; } // Check if user exists
 
   // Find category index and incremend the value
   let index = user.entries.findIndex(entry => entry.uuid === "ctfPoints")
-  user.entries[index].value += value
+  let currentPoints = user.entries[index].value
+  user.entries[index].value = Number(currentPoints) + Number(value)
 
   editUser(user)
   return true;
@@ -422,9 +420,10 @@ async function startServer() {
     if (process.argv.length == 4) {
       createAdmin(process.argv[2], process.argv[3])
       console.log("Created User: " + process.argv[2])
-  }
+    }
   
     loadEverything();
-  
+
+    console.log(genCTF())
   });
 }

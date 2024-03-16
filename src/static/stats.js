@@ -273,95 +273,89 @@ function updateDucks() {
 
 
 
-let ctfToSend = ""
 let userToSend = ""
-let userNameToSend = ""
-function highlightUser(username) {
+function highlightUser(uuid) {
 
+    console.log(uuid)
+    userToSend = uuid
+
+    document.getElementById("userSelectDisplay").value = userData.find(user => user.uuid === uuid).name
+    
 }
 
 async function submitCTF() {
 
-    let names = []
-    userData.forEach(user => {
-        names.push(user.name)
-    })
-
-    let form = $(`
+    let form = document.createElement("div")
+    form.innerHTML = `
         
-        <div class="btn-group">
-            <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"> Choose Your name </button>
+        <div class="input-group mb-3">
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"> Choose Your name </button>
 
-            <ul class="dropdown-menu" id="userDropdown">
-                <li>
-                    <a class="dropdown-item"> Current Challenge </a>
-                </li>
+                <ul class="dropdown-menu" id="userDropdown">
+                
+                </ul>
 
-            </ul>
+                <input class="form-control" name="" aria-describedby="basic-addon3" disabled id="userSelectDisplay">
+            </div>
         </div>
 
-        <br>
         <br>
 
         <div class="input-group mb-3">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="basic-addon3"> CTF </span>
             </div>
-            <input class="form-control" name="ctf" aria-describedby="basic-addon3">
-        </div>`);
-
-        let dropdown = form.find("ul[id=userDropdown]")
-        names.forEach(name => {
-            let li = document.createElement("li")
-            let a = document.createElement("a")
-            a.classList.add("dropdown-item")
-            a.innerText = name
-
-            li.appendChild(a)
-            dropdown.appendChild(li)
-        })
-
-        bootbox.alert(form, function(){
-            let newPos = {
-                x: JSON.parse(form.find('input[name=xPos]').val()),
-                y: JSON.parse(form.find('input[name=yPos]').val()),
-                rot: JSON.parse(form.find('input[name=rot]').val())
-            }
-
-        });
+            <input class="form-control" name="ctf" aria-describedby="basic-addon3" id="sendCTF">
+        </div>`;
 
 
+    let dropDown = form.querySelector("#userDropdown")
+    console.log(dropDown)
+    userData.forEach(user => {
+        let li = document.createElement("li")
+        let a = document.createElement("a")
+        a.classList.add("dropdown-item")
+        a.innerText = user.name
+        a.onclick = () => {
+            highlightUser(user.uuid)
+        }
 
+        li.appendChild(a)
+        dropDown.appendChild(li)
+    })
 
-
+    bootbox.alert({
+        title: "Submit CTF",
+        message: form,
+        backdrop: true,
+        centerVertical: true,
+        callback: async function() {
+            if (userToSend === "") { return }
     
-    // bootbox.prompt({
-    //     title: 'Enter CTF',
-    //     centerVertical: true,
-    //     callback: async function(result) {
-
-    //         let dialog = bootbox.dialog({
-    //             title: 'Submiting',
-    //             centerVertical: true,
-    //             message: '<p><i class="fas fa-spin fa-spinner"></i>Loading...</p>'
-    //         });
-
-
-    //         let sendResult = await sendCTF(result, "adsf")
-    //         if (sendResult) {
-    //             dialog.find('.bootbox-body').html('Correct!');
-    //         } else {
-    //             dialog.find('.bootbox-body').html('Invalid CTF');
-    //         }
-
-    //         setTimeout(() => {
-    //             dialog.modal('hide');
-    //         }, 2500);
-
-
-
-    //     }
-    // });
+            let dialog = bootbox.dialog({
+                title: 'Submiting',
+                centerVertical: true,
+                message: '<p><i class="fas fa-spin fa-spinner"></i>Loading...</p>'
+            });
+    
+    
+            let ctf = document.getElementById("sendCTF").value
+            let sendResult = await sendCTF(ctf, userToSend)
+            userToSend = ""
+    
+            if (sendResult) {
+                dialog.find('.bootbox-body').html('Correct!');
+            } else {
+                dialog.find('.bootbox-body').html('Invalid CTF');
+            }
+    
+            setTimeout(() => {
+                dialog.modal('hide');
+            }, 2500);
+            
+        }
+    });
 }
 async function sendCTF(ctf, user) {
     return new Promise(async (resolve) => {

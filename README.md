@@ -3,6 +3,7 @@
 ## Todo
 
 - [X] Add auto updater through github
+- [ ] Make user hide switch
 
 
 ## How To Install

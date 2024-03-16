@@ -1,3 +1,0 @@
-
-
-- Make user hide switch
