@@ -18,47 +18,22 @@ block layout-content
 
             ul(class="nav nav-pills justify-content-center")
               li(class="nav-item")
-                a(class="nav-link active" onclick="changePage('/admin/view/users')" style="color:white;") Users
+                a(class="nav-link" onclick="changePage('/admin/view/users')" style="color:white;") Users
               li(class="nav-item")
                 a(class="nav-link" onclick="changePage('/admin/view/categories')" style="color:white;") Categories
               li(class="nav-item")
-                a(class="nav-link" onclick="changePage('/admin/view/genCTF')" style="color:white;") Gen CTF
+                a(class="nav-link active" onclick="changePage('/admin/view/genCTF')" style="color:white;") Gen CTF
 
             br
 
             div(class="container text-center")
-              div(class="row")
-                div(class="col")
-
-                  ul(class="list-group" id="sideList")
-
-                  div(style="height:30px")
-                div(class="col")
-                  div(class="justify-content-center")
-
-                    button(type="button", class="btn btn-success" style="position:relative; bottom:0;" onclick="saveBtnClicked()") Save Changes
-                    button(type="button", class="btn btn-danger" style="position:relative; bottom:0;" onclick="deleteUsr()") Delete User
-
-                    br
-                    br
-
-                    div(class="input-group")
-                      span(class="input-group-text") Name:
-                      input(type="text" class="form-control" aria-label="With textarea" id="personName" )  
-                      
-                    br
-                    
-                    div(id="catContainer")
-            
-
-
+              div(id="ctfContainer")
 
 
       script.
-        var categories = !{categories};
-        var users = !{users};
+        var ctfs = !{ctfs};
 
         adjustDivSize()
 
       script(src="/static/adminLib.js")
-      script(src="/static/adminViewUsers.js")
+      script(src="/static/adminGenCTF.js")

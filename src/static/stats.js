@@ -286,9 +286,11 @@ function highlightUser(uuid) {
 async function submitCTF() {
 
     let form = document.createElement("div")
+    form.setAttribute("data-bs-theme", "dark")
+    
     form.innerHTML = `
         
-        <div class="input-group mb-3">
+        <div class="input-group mb-3" data-bs-theme="dark">
             <div class="btn-group">
                 <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"> Choose Your name </button>
 
@@ -302,7 +304,7 @@ async function submitCTF() {
 
         <br>
 
-        <div class="input-group mb-3">
+        <div class="input-group mb-3" data-bs-theme="dark">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="basic-addon3"> CTF </span>
             </div>
@@ -330,13 +332,15 @@ async function submitCTF() {
         message: form,
         backdrop: true,
         centerVertical: true,
+        className: 'dark-mode',
         callback: async function() {
             if (userToSend === "") { return }
     
             let dialog = bootbox.dialog({
                 title: 'Submiting',
                 centerVertical: true,
-                message: '<p><i class="fas fa-spin fa-spinner"></i>Loading...</p>'
+                message: '<p><i class="fas fa-spin fa-spinner"></i>Loading...</p>',
+                className: 'dark-mode'
             });
     
     

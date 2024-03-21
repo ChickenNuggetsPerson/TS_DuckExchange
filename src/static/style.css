@@ -1,7 +1,7 @@
 :root {
   /* --firstColor: rgb(234, 145, 78); */
   --firstColor: rgb(41, 51, 53);
-  --secondColor: rgb(100, 112, 133);
+  --secondColor: rgb(55, 60, 64);
   --thirdColor: rgb(75, 50, 40);
 }
 .center {
@@ -175,4 +175,10 @@ input {
   bottom:0px; 
   padding:10px; 
   zIndex:1000;
+}
+
+
+.dark-mode .modal-content {
+  background-color: rgb(39, 48, 50);
+  color: #fff;
 }

@@ -12,7 +12,7 @@ block layout-content
         div(id="outerBorder" class="text-center center" style="background-color: var(--firstColor); width:80%; border-radius:60px;")
           div(id="innerBoarder" class="center" style="background-color: var(--secondColor); width: 100%; border-radius: 45px;")
 
-            h1(style="font-family: Modak; color:var(--firstColor); letter-spacing: 4;") Admin View
+            h1(style="font-family: Modak; color: #6a7c99; letter-spacing: 6;") Admin View
           
             br
 
@@ -20,7 +20,9 @@ block layout-content
               li(class="nav-item")
                 a(class="nav-link" onclick="changePage('/admin/view/users')" style="color:white;") Users
               li(class="nav-item")
-                a(class="nav-link active") Categories
+                a(class="nav-link active" onclick="changePage('/admin/view/categories')" style="color:white;") Categories
+              li(class="nav-item")
+                a(class="nav-link" onclick="changePage('/admin/view/genCTF')" style="color:white;") Gen CTF
 
             br
 

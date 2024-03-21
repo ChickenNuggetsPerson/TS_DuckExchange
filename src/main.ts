@@ -123,6 +123,22 @@ app.get("/admin/view/categories", (req: Request, res: Response) => {
     users: JSON.stringify(getUsers())
   })
 })
+app.get("/admin/view/genCTF", (req: Request, res: Response) => {
+  if (!isAdmin(req)) {
+    res.redirect("/admin")
+    return
+  }
+
+
+  let ctfs = []
+  for (let i = 0; i < 10; i++) {
+    ctfs.push(genCTF())
+  }
+
+  res.render("adminGenCTF", {
+    ctfs: JSON.stringify(ctfs)
+  })
+})
 app.get("/admin/forceUpdate", async (req: Request, res: Response) => {
   if (!isAdmin(req)) {
     res.status(400);
