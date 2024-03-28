@@ -284,6 +284,7 @@ function highlightUser(uuid) {
 }
 
 async function submitCTF() {
+    mouseOver = true;
 
     let form = document.createElement("div")
     form.setAttribute("data-bs-theme", "dark")
@@ -356,6 +357,7 @@ async function submitCTF() {
     
             setTimeout(() => {
                 dialog.modal('hide');
+                mouseOver = false;
             }, 2500);
             
         }

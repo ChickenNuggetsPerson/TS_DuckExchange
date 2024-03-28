@@ -123,7 +123,7 @@ app.get("/admin/view/categories", (req: Request, res: Response) => {
     users: JSON.stringify(getUsers())
   })
 })
-app.get("/admin/view/genCTF", (req: Request, res: Response) => {
+app.get("/admin/view/genCTF", async (req: Request, res: Response) => {
   if (!isAdmin(req)) {
     res.redirect("/admin")
     return
@@ -131,12 +131,16 @@ app.get("/admin/view/genCTF", (req: Request, res: Response) => {
 
 
   let ctfs = []
-  for (let i = 0; i < 10; i++) {
-    ctfs.push(genCTF())
+  for (let i = 0; i < 9; i++) {
+    ctfs.push({
+      ctf: genCTF((i % 3) + 1),
+      value: ((i % 3) + 1) * 100
+    })
   }
 
   res.render("adminGenCTF", {
-    ctfs: JSON.stringify(ctfs)
+    ctfs: JSON.stringify(ctfs),
+    manualCTFs: JSON.stringify(await getManualCTFs())
   })
 })
 app.get("/admin/forceUpdate", async (req: Request, res: Response) => {
@@ -179,12 +183,12 @@ app.post('/admin/genHash', (req, res) => {
 app.get("/data/users", (req: Request, res: Response) => {
   res.json(getUsers());
 })
-app.post("/data/users/submitCTF", (req: Request, res: Response) => {
+app.post("/data/users/submitCTF", async (req: Request, res: Response) => {
   // if (!isAdmin(req)) { res.status(400); res.send("Not authorized"); return; }
 
   // console.log(req.body)
 
-  let result = addCTFValue(req.body.userUUID, req.body.ctf)
+  let result = await addCTFValue(req.body.userUUID, req.body.ctf)
 
   if (result) {
     res.status(200)
@@ -271,6 +275,38 @@ app.post("/data/admin/setCategoryVisablity", (req: Request, res: Response) => {
   setCategoryVisablity(req.body.uuid, req.body.newShow)
   res.status(200)
   res.send("OK")
+})
+
+app.post("/data/admin/ctf/edit", async (req: Request, res: Response) => {
+  if (!isAdmin(req)) { res.status(400); res.send("Not authorized"); return; }
+
+  // console.log(req.body)
+  switch (req.body.type) {
+    case "add": {
+      let result = await manualCreateCTF(req.body.ctf, JSON.parse(req.body.value))  
+      
+      if (result) {
+        console.log("Created CTF: ", req.body.ctf)
+        res.status(200); res.send("OK"); return;
+      } else {
+        res.status(400); res.send("error"); return; 
+      }
+    }
+    
+    case "delete": {
+        
+      await deleteCTF(req.body.ctf)
+      console.log("Deleted CTF: ", req.body.ctf)
+        
+      res.status(200); res.send("OK"); return; 
+    }
+
+    default:
+      res.status(400); res.send("Not authorized"); return; 
+  }
+  
+  // manualCreateCTF()
+  // deleteCTF()
 })
 
 
@@ -362,11 +398,11 @@ function getUserFromUUID( uuid: string ) : User | undefined {
 }
 
 
-import { getCTFValue, genCTF } from './ctfLib';
-function addCTFValue( userUUID: string, ctf: string ) : boolean {
+import { getCTFValue, genCTF, initStorage, manualCreateCTF, deleteCTF, getManualCTFs} from './ctfLib';
+async function addCTFValue( userUUID: string, ctf: string ) : Promise<boolean> {
   
   // Get the CTF value
-  let value = getCTFValue(ctf)
+  let value = await getCTFValue(ctf)
   if (value == 0) { return false; }
 
   // Get the user object
@@ -428,18 +464,25 @@ async function startServer() {
   await printAnimation();
 
   updater = new AutoUpdater("https://raw.githubusercontent.com/ChickenNuggetsPerson/TS_DuckExchange/main/package.json", "0 * 0 * * *");
+  
+  // Clear sessions
+  // let sessions = fs.readdirSync("./sessions")
+  // sessions.forEach(sess => {
+  //     fs.unlinkSync("./sessions/" + sess)
+  // })
 
-  app.listen(port, () => {
+  app.listen(port, async () => {
   
     console.log(`Server started at locataion ${address}:${port}`);
   
-    if (process.argv.length == 4) {
+    if (process.argv.length == 4) { // Create admin login
       createAdmin(process.argv[2], process.argv[3])
       console.log("Created User: " + process.argv[2])
     }
   
     loadEverything();
+    await initStorage();
 
-    console.log(genCTF())
+    // console.log(genCTF())
   });
 }

@@ -27,11 +27,44 @@ block layout-content
             br
 
             div(class="container text-center")
-              div(id="ctfContainer")
+              div(class="row")
+                div(class="col")
+
+                  div(class="container text-center")
+                    div(id="ctfContainer")
+
+
+                div(class="col")
+                  h1(style="color: #6a7c99; letter-spacing: 6;") Manual CTFs
+                  br
+
+                  div(class="input-group mb-3" data-bs-theme="dark")
+                    
+                    div(class="input-group-prepend")
+                        span(class="input-group-text" id="basic-addon3") SHS_CTF{
+
+                    input(class="form-control" name="ctf" aria-describedby="basic-addon3" id="ctfInput")
+
+                    div(class="input-group-prepend")
+                        span(class="input-group-text" id="basic-addon3") }
+
+                  div(class="input-group mb-3" data-bs-theme="dark")
+                    div(class="input-group-prepend")
+                        span(class="input-group-text" id="basic-addon3") Value: 
+                    input(class="form-control" name="ctf" aria-describedby="basic-addon3" id="ctfValue" type="number" value="100")
+
+                  button(type="button", class="btn btn-success" style="position:relative; bottom:0;" onclick="submitCTF()") Submit
+
+                  br
+                  br
+
+                  div(class="container text-center")
+                    div(id="manualCTFContainer")
 
 
       script.
         var ctfs = !{ctfs};
+        var manualCTFs = !{manualCTFs};
 
         adjustDivSize()
 

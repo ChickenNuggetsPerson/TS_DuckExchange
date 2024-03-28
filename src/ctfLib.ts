@@ -1,99 +1,178 @@
+import { RandomWordOptions, generateSlug } from "random-word-slugs";
+const Sequelize = require('sequelize');
 
-function charToNum(c : string) : number {
-    c = c.toLowerCase()
 
-    switch (c) {
-        case "a":
-            return 0;
-        case "b":
-            return 1;
-        case "c":
-            return 2;
-        case "d":
-            return 3;
-        case "e":
-            return 4;
-        case "f":
-            return 5;
-        case "g":
-            return 6;
-        case "h":
-            return 7;
-        case "i":
-            return 8;
-        case "j":
-            return 9;
-        
-
-        default:
-            return -1;
-    }
-}
-function numToChar(n : number) : string {
-    let letters = "abcdefghij"
-    if (n < 0 || n > 9) { 
-        return ""
-    }
-
-    return letters.charAt(n)
+const ctfSequalizer = new Sequelize('database', 'user', 'password', {
+	host: 'localhost',
+	dialect: 'sqlite',
+	logging: false,
+	storage: 'data/ctfs.sqlite',
+});
+const ctfTags = ctfSequalizer.define('ctf', {
+    ctf: Sequelize.STRING,
+    value: Sequelize.INTEGER,
+    generated: Sequelize.BOOLEAN
+})
+async function initStorage() {
+    await ctfTags.sync();
 }
 
+interface manualCTF {
+    ctf: string;
+    value: string;
+}
+
+
+async function addCTF(ctf: string, generated: boolean, value: number) : Promise<void> {
+    if (await validateCTF(ctf)) { // Storage already contains ctf
+        return;
+    }
+
+    await ctfTags.create({
+        ctf: ctf,
+        value: value,
+        generated: generated
+    })
+    await ctfTags.sync();
+}
+async function deleteCTF(ctf: string) : Promise<void> {
+    await ctfTags.sync();
+    await ctfTags.destroy({where: {
+        ctf: ctf,
+    }})
+    ctfTags.sync();
+}
 
 // Generates a random CTF
-function genCTF() {
-    let number = Math.floor(Math.random() * 10000000000000000)
-    let inside = (""+number).split("")
+// Difficulty 1 - 3
+function genCTF(diff: number) {
+    if (diff < 1) { diff = 1 }
+    if (diff > 3) { diff = 3 }
 
-    let str = "";
-    let runningNum = 0;
-    inside.forEach(i => {
-        str += numToChar(JSON.parse(i))
-        runningNum += JSON.parse(i);
-    })
+    let slug = "";
 
-    str += numToChar(runningNum % 10)
+    switch (diff) {
+        case 1: { // Easy
+            const options1: RandomWordOptions<2> = {
+                format: "kebab",
+                categories: {
+                    noun: ["animals", "place"],
+                    adjective: ["color", "personality"],
+                },
+                partsOfSpeech: ["adjective", "noun"], 
+            };
+            slug = generateSlug(2, options1)
+            
+            break;
+        }
+        case 2: { // Medium
 
-    return `SHS_CTF{${str}}`
+            const options2: RandomWordOptions<3> = {
+                format: "kebab",
+                categories: {
+                    noun: ["food", "media"],
+                    adjective: ["size", "shapes"],
+                },
+                partsOfSpeech: ["adjective", "adjective", "noun"], 
+            };
+            slug = generateSlug(3, options2)
+
+            break;
+        }
+        case 3: { // Hard
+
+            const options3: RandomWordOptions<4> = {
+                format: "kebab",
+                categories: {
+                    noun: ["business", "technology", "transportation"],
+                    adjective: ["appearance", "taste", "condition"],
+                },
+                partsOfSpeech: ["adjective", "adjective", "adjective", "noun"], 
+            };
+            slug = generateSlug(4, options3)
+
+            break;
+        }
+    }
+    
+    let ctf = `SHS_CTF{${slug}}`
+    addCTF(ctf, true, 0)
+    return ctf
 }
+async function manualCreateCTF(ctf : string, value : number) : Promise<boolean> {
+    if (await validateCTF(ctf)) {
+        return false; // CTF already exists or is not valid
+    }
+
+    await addCTF(ctf, false, value)
+    return true;
+}
+async function getManualCTFs() : Promise<manualCTF[]>{
+    await ctfTags.sync();
+    let databaseCTFs = await ctfTags.findAll({
+        where: {
+            generated: false
+        }
+    });
+
+    let ctfs : manualCTF[] = []
+    databaseCTFs.forEach((ctf: any) => {
+        ctfs.push({ctf: ctf.ctf, value: ctf.value})
+    });
+
+    return ctfs;
+}
+
 // Validates a CTF
-function validateCTF(ctf : string) : boolean {
+async function validateCTF(ctf : string) : Promise<boolean> {
     // Check begining and end
     if (!ctf.startsWith("SHS_CTF{") || !ctf.endsWith("}")) {
         return false;
     }
 
-    // Convert chars into num array
-    let value = ctf.replace("SHS_CTF{", "").replace("}", "").replace("-", "");
-    let nums = [] 
+    await ctfTags.sync();
+    let databaseCTF = await ctfTags.findAll({
+        where: {
+            ctf: ctf
+        }
+    });
 
-    for (let i = 0; i < value.length; i++) {
-        nums.push(charToNum(value.charAt(i)))
-    }
+    return databaseCTF.length > 0;
+}
 
-    // Check if num array has -1, if so, invalidate the ctf
-    let valid = true;
-    nums.forEach(n => {
-        if (n == -1) { valid = false; }
-    })
-    if (!valid) { return false; }
+// Returns the CTF Database value if it was manually created
+// Generated CTFS return 0
+async function getCTFDatabaseValue(ctf : string) : Promise<number> {
+    await ctfTags.sync();
+    let databaseCTF = await ctfTags.findAll({
+        where: {
+            ctf: ctf
+        }
+    });
+    try {
+        if (databaseCTF[0].generated) {
+            return 0;
+        }
+    } catch (err) { return 0; }
 
-    if (nums.length < 10) { return false; }
-
-    // Validate the CTF
-    let runningNum = 0;
-    for (let i = 0; i < nums.length - 1; i++) {
-        runningNum += nums[i]
-    }
-
-    return nums[nums.length - 1] == runningNum % 10;
+    return databaseCTF[0].value
 }
 
 
-function getCTFValue(ctf : string) : number {
-    if (!validateCTF(ctf)) { return 0; }
+async function getCTFValue(ctf : string) : Promise<number> {
+    if (!await validateCTF(ctf)) { return 0; }
 
-    return 100;
+    let databaseCTFValue = await getCTFDatabaseValue(ctf);
+
+    await deleteCTF(ctf)
+
+    if (databaseCTFValue == 0) {
+        let amt = ctf.split("-").length - 1 // Gets the amount of hyphens
+        return 100 * amt;
+    }
+
+    return databaseCTFValue
 }
 
 
-export { genCTF, validateCTF, getCTFValue}
+export { genCTF, validateCTF, getCTFValue, initStorage, manualCreateCTF, deleteCTF, getManualCTFs}

@@ -4,6 +4,7 @@
 
 - [X] Add auto updater through github
 - [ ] Make user hide switch
+- [ ] Manual CTF generation
 
 
 ## How To Install

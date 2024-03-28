@@ -17,13 +17,23 @@ class AutoUpdater {
         console.log("Started Auto Updater")
         console.log("")
         cron.schedule(updateCron, () => {
-            this.check();
+            this.checkAndUpdate();
         });
+        
+        setTimeout(() => {
+          this.check()
+        }, 2000);
     };
     
 
     async check() : Promise<void> {
-        //let result = this.checkVersions(this.currentVersion, this.parseVersionString(await this.fetchJSON(this.repoUrl)));
+      let result = (this.currentVersion == await this.fetchJSON(this.repoUrl))
+      if (result) { return; }
+
+      console.log("Update Avaliable - Updating Tonight")
+
+  }
+    async checkAndUpdate() : Promise<void> {
         let result = (this.currentVersion == await this.fetchJSON(this.repoUrl))
         console.log("Check For Update Result: ", result)
         if (result) { return; }
@@ -40,21 +50,6 @@ class AutoUpdater {
           
           child.unref();
 
-    }
-    private parseVersionString( versionString : string ) : Array<number> {
-        let strArray = versionString.split(".");
-        let parsedArray : Array<number> = [];
-        strArray.forEach(str => {
-            parsedArray.push(JSON.parse(str));
-        })
-        return parsedArray;
-    }
-    private checkVersions( ver1 : Array<number>, ver2 : Array<number> ) : boolean {
-        let result : boolean = true;
-        for (let i = 0; i < ver1.length; i++) {
-            if (ver1[i] != ver2[i]) { result = false; }
-        }
-        return result;
     }
     private async fetchJSON( url : string ) : Promise<string> {
         return new Promise((resolve) => {
