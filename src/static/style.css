@@ -1,3 +1,5 @@
+input[disabled] {pointer-events:none}
+
 :root {
   /* --firstColor: rgb(234, 145, 78); */
   --firstColor: rgb(41, 51, 53);
@@ -115,6 +117,15 @@ input {
   border-radius: 5px;
   color: white !important;
 }
+.dataTables_wrapper th{
+  /* font-size: 100%;
+
+  height: 34px;
+  padding-left: 10px !important;
+  padding-top: 0px !important;
+  padding-bottom: 0px !important; */
+}
+
 .paginate_button:hover {
   background: rgb(var(--bs-body-bg-rgb)) !important;
   border-radius: 10px !important;
@@ -123,6 +134,7 @@ input {
 .dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
   color: rgb(var(--bs-body-bg-rgb)) !important;
 }
+
 
 
 
@@ -181,4 +193,8 @@ input {
 .dark-mode .modal-content {
   background-color: rgb(39, 48, 50);
   color: #fff;
+}
+
+.fakeBtn {
+  cursor: pointer;
 }

@@ -20,6 +20,10 @@ function fillContainer(ctfs, container, isManual) {
         div.classList.add("input-group", "mb-3")
         div.setAttribute("data-bs-theme", "dark")
 
+        div.addEventListener("click", () => {
+            copyText(ctf.ctf)
+        })
+
         // Create CTF displayer
         let ctfInput = document.createElement("input")
         ctfInput.classList.add("form-control")
@@ -66,7 +70,6 @@ async function submitCTF() {
     if (ctfInput.value == "") { return;}
 
     let ctfValueInput = document.getElementById("ctfValue")
-    if (ctfValueInput.value <= 0) { return; }
 
     let ctf = `SHS_CTF{${ctfInput.value}}`
     let value = ctfValueInput.value
@@ -128,7 +131,17 @@ async function deleteCTF(ctf) {
     }, 500);
 }
 
-
+async function copyText(text) {
+    console.log("Copying: ", text)
+    
+    try {
+        await navigator.clipboard.writeText(text)
+        $.notify("CTF Coppied", "success");
+    } catch(err) {
+        $.notify("There was an error copying the CTF", "error");
+    }
+    
+}
 
 
 

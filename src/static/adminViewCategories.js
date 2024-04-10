@@ -3,6 +3,7 @@
 
 function buildInputs() {
     let container = document.getElementById("catContainer")
+    container.setAttribute("data-bs-theme", "dark")
 
     //div(class="input-group")
     //    span(class="input-group-text") Name:
@@ -192,6 +193,8 @@ function buildPage() {
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('uuid')) {
         sidelistSelectUUID(urlParams.get("uuid"))
+    } else {
+        sidelistSelectIndex(1)
     }
 }
 buildPage()

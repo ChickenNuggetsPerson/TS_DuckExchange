@@ -28,6 +28,11 @@ let selected = ""
 function sidelistSelectUUID(uuid) {
     document.getElementById("sideListUUID-" + uuid).click()
 }
+function sidelistSelectIndex(index) {
+    if (index >= document.getElementById("sideList").children.length) {return; }
+    // let uuid = document.getElementById("sideList").children.item(index).getAttribute("uuid")
+    document.getElementById("sideList").children.item(index).click()
+}
 function sideListSelect(numer, uuid, clickFunction) {
     for (let i = 0; i < document.getElementById("sideList").children.length; i++) {
         document.getElementById("sideList").children.item(i).classList.remove("active")
@@ -48,6 +53,7 @@ function sideListAddItem(name, uuid, clickFunction) {
     
     let number = listLength
     li.id = "sideListUUID-" + uuid
+    li.setAttribute("uuid", uuid)
     li.onclick = function () {
         sideListSelect(number, uuid, clickFunction)
     }
