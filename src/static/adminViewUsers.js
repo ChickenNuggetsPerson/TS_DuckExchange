@@ -94,7 +94,7 @@ function updateInputs(uuid) {
         //console.log(entry.show)
     })
 }
-function buildUserList() {
+function buildCategoryList() {
     users.forEach(user => {
         sideListAddItem(user.name, user.uuid, function() {
             updateInputs(user.uuid)
@@ -227,7 +227,7 @@ function buildPage() {
     })
 
     buildInputs();
-    buildUserList();
+    buildCategoryList();
 
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('uuid')) {

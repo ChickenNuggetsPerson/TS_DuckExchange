@@ -30,10 +30,16 @@ function updateInputs(uuid) {
     visableList[1].checked = !cat.isVisable;
 
 }
-function buildUserList() {
+function buildCategoryList() {
     categories.forEach(cat => {
         sideListAddItem(cat.name, cat.uuid, function() {
             updateInputs(cat.uuid)
+
+            if (cat.uuid === "ctfPoints") {
+                document.getElementById("ctfDisplayer").textContent = "CTF Category"
+            } else {
+                document.getElementById("ctfDisplayer").textContent = ""
+            }
         })
     })
 }
@@ -188,7 +194,7 @@ function buildPage() {
     })
 
     buildInputs();
-    buildUserList();
+    buildCategoryList();
 
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('uuid')) {

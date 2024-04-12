@@ -47,6 +47,7 @@ function sideListAddItem(name, uuid, clickFunction) {
     let li = document.createElement("li")
     li.innerText = name
     li.classList.add("list-group-item")
+    li.classList.add("list-group-item-action")
     if (listLength == 0) {
         li.classList.add("active")
     }
