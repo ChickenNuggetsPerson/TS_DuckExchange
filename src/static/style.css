@@ -191,8 +191,16 @@ input {
 
 
 .dark-mode .modal-content {
-  background-color: rgb(39, 48, 50);
+  /* background-color: rgba(82, 102, 108, 0.268); */
   color: #fff;
+
+
+  background: rgba(71, 83, 85, 0.537); /* Adjust the opacity as needed */
+  backdrop-filter: blur(10px); /* Adjust the blur radius as needed */
+  -webkit-backdrop-filter: blur(10px); /* Support for older Safari versions */
+  box-shadow: 10px 10px rgba(99, 116, 117, 0.066);
+
+  font-family: 'Arial Black',sans-serif;
 }
 
 .fakeBtn {

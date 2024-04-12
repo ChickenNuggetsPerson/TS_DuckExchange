@@ -292,13 +292,12 @@ async function submitCTF() {
     form.innerHTML = `
         
         <div class="input-group mb-3" data-bs-theme="dark">
-            <div class="btn-group">
+            <div class="btn-group input-group-prepend">
                 <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"> Choose Your name </button>
 
-                <ul class="dropdown-menu" id="userDropdown">
-                
-                </ul>
-
+                <ul class="dropdown-menu" id="userDropdown"></ul>
+            </div>
+            <div class="btn-group input-group-prepend">
                 <input class="form-control" name="" aria-describedby="basic-addon3" disabled id="userSelectDisplay">
             </div>
         </div>
@@ -340,26 +339,53 @@ async function submitCTF() {
             let dialog = bootbox.dialog({
                 title: 'Submiting',
                 centerVertical: true,
-                message: '<p><i class="fas fa-spin fa-spinner"></i>Loading...</p>',
+                message: `
+                
+                <div class="progress frosted-glass" role="progressbar" aria-label="Animated striped example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%;" id="ctfProgressBar"></div>
+                </div>
+                
+                
+                `,
                 className: 'dark-mode'
             });
     
-    
+
+            let progressWidth = 0;
+            let id = setInterval(() => {
+                let progressBar = document.getElementById("ctfProgressBar")
+                if (progressWidth <= 100) {
+                    progressBar.style.width = progressWidth + "%"
+                } else {
+                    progressBar.style.width = "100%"
+                }
+                progressWidth += Math.random() * 20;
+            }, 300);
+
             let ctf = document.getElementById("sendCTF").value
             let sendResult = await sendCTF(ctf, userToSend)
             userToSend = ""
-    
-            if (sendResult) {
-                dialog.find('.bootbox-body').html('Correct!');
-            } else {
-                dialog.find('.bootbox-body').html('Invalid CTF');
-            }
-    
-            setTimeout(() => {
-                dialog.modal('hide');
-                mouseOver = false;
-            }, 2500);
-            
+
+            let clearID = setInterval(() => {
+                if (progressWidth > 130) {
+
+                    if (sendResult) {
+                        dialog.find('.bootbox-body').html('Correct!');
+                    } else {
+                        dialog.find('.bootbox-body').html('Invalid CTF');
+                    }
+                    clearInterval(clearID)
+                    clearInterval(id)
+
+
+                    setTimeout(() => {
+                        dialog.modal('hide');
+                        mouseOver = false;
+                        clearInterval(id)
+                    }, 2000);
+                }
+            }, 1000);
+
         }
     });
 }
@@ -380,10 +406,12 @@ async function sendCTF(ctf, user) {
 
         const rewResult = await response.text();
         console.log(rewResult)
-        if (rewResult == "OK") {
-            resolve(true)
-        } else {
-            resolve(false)
-        }
+        setTimeout(() => {
+            if (rewResult == "OK") {
+                resolve(true)
+            } else {
+                resolve(false)
+            }
+        }, 1000);
     })
 }
