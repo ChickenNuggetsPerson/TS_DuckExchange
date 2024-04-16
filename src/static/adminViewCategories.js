@@ -33,13 +33,16 @@ function updateInputs(uuid) {
 function buildCategoryList() {
     categories.forEach(cat => {
         sideListAddItem(cat.name, cat.uuid, function() {
-            updateInputs(cat.uuid)
-
+            
             if (cat.uuid === "ctfPoints") {
-                document.getElementById("ctfDisplayer").textContent = "CTF Category"
+                document.getElementById("ctfDisplayer").style.display = "block" 
+                document.getElementById("deleteCategoryBtn").disabled = true;
             } else {
-                document.getElementById("ctfDisplayer").textContent = ""
+                document.getElementById("ctfDisplayer").style.display = "none"
+                document.getElementById("deleteCategoryBtn").disabled = false;
             }
+            
+            updateInputs(cat.uuid)
         })
     })
 }
@@ -191,6 +194,8 @@ function buildPage() {
 
     sideListAddItem("New Category", "", function() {
         updateInputs("")
+        document.getElementById("ctfDisplayer").style.display = "none"
+        document.getElementById("deleteCategoryBtn").disabled = false;
     })
 
     buildInputs();

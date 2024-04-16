@@ -341,7 +341,7 @@ async function submitCTF() {
                 centerVertical: true,
                 message: `
                 
-                <div class="progress frosted-glass" role="progressbar" aria-label="Animated striped example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="background-color: #252525;">
                     <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%;" id="ctfProgressBar"></div>
                 </div>
                 

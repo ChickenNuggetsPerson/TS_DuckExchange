@@ -38,12 +38,12 @@ block layout-content
                   div(class="justify-content-center")
 
                     button(type="button", class="btn btn-success" style="position:relative; bottom:0;" onclick="saveBtnClicked()") Save Changes
-                    button(type="button", class="btn btn-danger" style="position:relative; bottom:0;" onclick="deleteUsr()") Delete Category
+                    button(type="button", class="btn btn-danger" style="position:relative; bottom:0;" onclick="deleteUsr()" id="deleteCategoryBtn") Delete Category
 
                     br
                     br
 
-                    h3(id="ctfDisplayer" style="color: orange;")
+                    h3(id="ctfDisplayer" style="color: orange;" title="CTF points will be rewarded into this category") CTF Category
 
                     div(class="input-group" style="min-width:190px;" data-bs-theme="dark")
                       span(class="input-group-text") Name:
@@ -51,8 +51,7 @@ block layout-content
                       
                     br
 
-                    h3 Category Visability
-
+                    h3(title="Display the category on the main page") Category Visability
                     div(class="container" style="background-color: rgba(41, 25, 25, 0.27); width: fit-content; padding: 0px; border-radius:10px;")
                       input(type="radio" class="btn-check" name="visable" id="success-outlined" autocomplete="off" checked )
                       label(class="btn btn-outline-success" for="success-outlined" id="visable") Visable
@@ -63,7 +62,7 @@ block layout-content
                     br
                     br
 
-                    h3 User Visability
+                    h3(title="Obfuscates the category values for all users") User Visability
                     button(type="button", class="btn btn-success" style="position:relative; bottom:0;" onclick="newShowVal(true)") Show For All
                     button(type="button", class="btn btn-danger" style="position:relative; bottom:0;" onclick="newShowVal(false)") Hide For All
                     

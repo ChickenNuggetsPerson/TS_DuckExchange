@@ -44,6 +44,7 @@ function buildInputs() {
         visableBtnLabel.classList.add("btn"); visableBtnLabel.classList.add("btn-outline-success");
         visableBtnLabel.htmlFor = cat.uuid + "-success-outlined"
         visableBtnLabel.innerText = "Visable"
+        visableBtnLabel.title = "Display the category value for this user"
 
 
         let not_visableBtn = document.createElement("input")
@@ -57,6 +58,7 @@ function buildInputs() {
         not_visableBtnLabel.classList.add("btn"); not_visableBtnLabel.classList.add("btn-outline-danger");
         not_visableBtnLabel.htmlFor = cat.uuid + "-danger-outlined"
         not_visableBtnLabel.innerText = "Hidden"
+        not_visableBtnLabel.title = "Hide the category value for this user"
 
         btnDiv.appendChild(visableBtn)
         btnDiv.appendChild(visableBtnLabel)
@@ -73,16 +75,22 @@ function buildInputs() {
         container.appendChild(group)
     });
 }
+/** @type {import('../lib').User} */
+let currentUser;
 function updateInputs(uuid) {
     if (uuid == "") {
         let items = document.querySelectorAll("input")
-        items.forEach(item => {
-            item.value = "0"
-        })
+        
+        items[0].value = ""
+        for(let i = 1; i < items.length; i++) {
+            items[i].value = 0
+        }
         return
     }
 
+    /** @type {import('../lib').User} */
     let user = getUser(uuid)
+    currentUser = user
 
     document.getElementById("personName").value = user.name
 
@@ -91,7 +99,6 @@ function updateInputs(uuid) {
         let visableList = document.getElementsByName(entry.uuid + "visableBtn")
         visableList[0].checked = entry.show;
         visableList[1].checked = !entry.show;
-        //console.log(entry.show)
     })
 }
 function buildCategoryList() {
@@ -101,6 +108,60 @@ function buildCategoryList() {
         })
     })
 }
+
+setInterval(() => { // Check for input changes
+    let changed = false;
+    let disabled = false;
+    
+    currentUser.entries.forEach(entry => {
+
+        if (changed || disabled) { return; }
+        
+        try {
+
+            let value = JSON.parse(document.getElementById(entry.uuid).value)
+            let prevVal = JSON.parse(entry.value)
+
+            if (value !== prevVal) {
+                changed = true
+            }
+
+            let visable = JSON.parse(document.getElementsByName(entry.uuid + "visableBtn")[0].checked)
+            let prevVisable = JSON.parse(entry.show)
+
+            console.log(visable, prevVisable)
+
+            if (visable !== prevVisable) {
+                changed = true
+            }
+        } catch(err) { // User entered a letter into the text input
+            disabled = true
+        }
+
+    })
+
+    document.getElementById("saveBtn").classList.remove("btn-success")
+    document.getElementById("saveBtn").classList.remove("btn-warning")
+    document.getElementById("saveBtn").classList.remove("btn-secondary")
+
+    if (disabled) {
+        document.getElementById("saveBtn").disabled = true
+        document.getElementById("saveBtn").classList.add("btn-secondary")
+        return;
+    } else {
+        document.getElementById("saveBtn").disabled = false
+    }
+
+    if (!changed) {
+        document.getElementById("saveBtn").classList.remove("btn-success")
+        document.getElementById("saveBtn").classList.add("btn-warning")
+    } else {
+        document.getElementById("saveBtn").classList.remove("btn-warning")
+        document.getElementById("saveBtn").classList.add("btn-success")
+    }
+
+}, 200);
+
 
 
 function getCatVals() {

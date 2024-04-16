@@ -195,10 +195,10 @@ input {
   color: #fff;
 
 
-  background: rgba(71, 83, 85, 0.537); /* Adjust the opacity as needed */
+  background: rgba(47, 55, 57, 0.537); /* Adjust the opacity as needed */
   backdrop-filter: blur(10px); /* Adjust the blur radius as needed */
   -webkit-backdrop-filter: blur(10px); /* Support for older Safari versions */
-  box-shadow: 10px 10px rgba(99, 116, 117, 0.066);
+  box-shadow: 10px 10px rgba(80, 94, 95, 0.066);
 
   font-family: 'Arial Black',sans-serif;
 }
