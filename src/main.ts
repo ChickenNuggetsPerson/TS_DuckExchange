@@ -463,7 +463,7 @@ async function startServer() {
 
   await printAnimation();
 
-  updater = new AutoUpdater("https://raw.githubusercontent.com/ChickenNuggetsPerson/TS_DuckExchange/main/package.json", "0 * 0 * * *");
+  updater = new AutoUpdater("https://raw.githubusercontent.com/ChickenNuggetsPerson/TS_DuckExchange/main/package.json", "0 0 0 * * *");
   
   // Clear sessions
   // let sessions = fs.readdirSync("./sessions")
